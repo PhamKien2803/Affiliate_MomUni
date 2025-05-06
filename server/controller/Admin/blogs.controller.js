@@ -26,8 +26,7 @@ module.exports.deleteBlog = async (req, res) => {
         if (!id) {
             return res.status(404).json({ message: 'Blog not found' });
         }
-
-        const deletedBlog = await Blogs.findByIdAndUpdate(id, {
+        await Blogs.findByIdAndUpdate(id, {
             status: true
         });
 
