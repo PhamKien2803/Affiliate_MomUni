@@ -15,19 +15,24 @@ const BlogsSchema = new mongoose.Schema({
             clickCount: { type: Number, default: 0 }
         }
     ],
-    media: [
+    images: [
         {
-            type: { type: String, enum: ['image', 'video'] },
             url: String,
-            caption: String
+            caption: String,
+            public_id: String,
         }
     ],
     viewCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },
-    status: {
+    deleted: {
         type: Boolean,
         default: false
+    },
+    status: {
+        type: String,
+        enum: ['active', 'inactive'],
+        default: 'active'
     }
 }, {
     timestamps: true
