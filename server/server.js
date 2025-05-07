@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 const app = express();
 const connectDb = require('./config/db')
 const adminRouter = require('./routes/index')
@@ -11,6 +12,8 @@ const corsOptions = {
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
 };
+app.set("trust proxy", true);
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

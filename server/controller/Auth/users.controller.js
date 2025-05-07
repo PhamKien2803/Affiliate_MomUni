@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const Users = require("../../model/users.model");
 const { createAccessToken, createRefreshToken } = require("../../utils/jwt");
 const { sendOTPEmail } = require("../../utils/emailsOTP");
+const { setAuthCookies } = require("../../utils/cookieUtils")
 
 
 // API: /api/auth/register
@@ -97,7 +98,7 @@ exports.loginAccount = async (req, res) => {
             { new: true }
         );
 
-
+        setAuthCookies(res, accessToken, refreshToken);
         return res.status(200).json({
             message: "Login successfully",
             accessToken: accessToken,
@@ -283,7 +284,7 @@ exports.refreshToken = async (req, res) => {
             id: userToken.user._id,
             role: userToken.user.role,
         });
-
+        setAuthCookies(res, accessToken, refreshToken);
         return res.status(200).json({
             message: "Token refreshed successfully",
             accessToken,

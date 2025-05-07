@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const CryptoJS = require("crypto-js");
-
 dotenv.config();
 
 const decryptData = (encryptedData) => {

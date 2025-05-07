@@ -23,6 +23,7 @@ const BlogsSchema = new mongoose.Schema({
         }
     ],
     viewCount: { type: Number, default: 0 },
+    clickCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },
     status: {

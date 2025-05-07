@@ -2,7 +2,6 @@ const blogsRoute = require('./blogs.router')
 const usersRoute = require("./users.router")
 const expertFormRoute = require("./expertForm.router")
 const notificationRoute = require("./notification.router")
-
 const commentRoute = require("./comment.router")
 const ratingRoute = require("./rating.router")
 const blogCustomerRoute = require("./blog-customer.router")
