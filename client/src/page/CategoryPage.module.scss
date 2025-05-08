@@ -1,0 +1,23 @@
+/* src/pages/CategoryPage.module.scss */
+.header {
+    display: flex;
+    background-color: #f4f0e7;
+    padding: 2rem;
+  }
+  .header h1 {
+    font-size: 2rem;
+    font-family: serif;
+    margin-bottom: 0.5rem;
+  }
+  .header p {
+    color: #555;
+    line-height: 1.4;
+  }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 2rem 1rem;
+    background-color: #fff;
+  }
+  

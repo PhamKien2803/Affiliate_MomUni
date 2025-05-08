@@ -1,0 +1,40 @@
+/* src/components/ProductCard/ProductCard.module.scss */
+.card {
+    background-color: #fff;
+    text-align: center;
+    margin: 1rem;
+    flex: 0 0 30%;
+  }
+  .imageWrapper {
+    position: relative;
+  }
+  .imageWrapper img {
+    width: 100%;
+    display: block;
+  }
+  .fav {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .info {
+    padding: 1rem;
+  }
+  .info h3 {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    font-family: serif;
+  }
+  .tagline {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  .price {
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+  
