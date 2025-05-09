@@ -22,6 +22,11 @@ const BlogsSchema = new mongoose.Schema({
             public_id: String,
         }
     ],
+    video: {
+        url: String,
+        caption: String,
+        public_id: String
+    },
     viewCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },

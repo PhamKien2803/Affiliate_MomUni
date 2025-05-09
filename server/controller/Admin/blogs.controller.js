@@ -22,12 +22,29 @@ module.exports.createBlog = async (req, res) => {
                 : req.body.affiliateLinks;
         }
 
-        if (req.files && req.files.length > 0) {
-            req.body.images = req.files.map((file, index) => ({
-                url: file.path,
-                caption: req.body.captions?.[index] || '',
-                public_id: file.filename,
-            }));
+        if (req.files) {
+            if (req.files['images']) {
+                const captions = Array.isArray(req.body.captions)
+                    ? req.body.captions
+                    : req.body.captions
+                        ? [req.body.captions]
+                        : [];
+
+                req.body.images = req.files['images'].map((file, index) => ({
+                    url: file.path,
+                    caption: captions[index] || '',
+                    public_id: file.filename,
+                }));
+            }
+
+            if (req.files['video'] && req.files['video'][0]) {
+                const videoFile = req.files['video'][0];
+                req.body.video = {
+                    url: videoFile.path,
+                    caption: '',
+                    public_id: videoFile.filename,
+                };
+            }
         }
         const newBlog = new Blogs(req.body);
         await newBlog.save();
@@ -94,20 +111,34 @@ module.exports.updateBlog = async (req, res) => {
 
         if (content !== undefined) blog.content = content;
         if (summary !== undefined) blog.summary = summary;
-        if (req.files && req.files.length > 0) {
-            if (blog.images && blog.images.length > 0) {
-                for (const img of blog.images) {
-                    if (img.public_id) {
-                        await cloudinary.uploader.destroy(img.public_id);
+        if (req.files) {
+
+            if (req.files?.['images']) {
+                if (blog.images && blog.images.length > 0) {
+                    for (const img of blog.images) {
+                        if (img.public_id) await cloudinary.uploader.destroy(img.public_id);
                     }
                 }
+
+                blog.images = req.files['images'].map((file, index) => ({
+                    url: file.path,
+                    caption: Array.isArray(captions) ? captions[index] : '',
+                    public_id: file.filename
+                }));
             }
 
-            blog.images = req.files.map((file, index) => ({
-                url: file.path,
-                caption: Array.isArray(captions) ? captions[index] : '',
-                public_id: file.filename
-            }));
+            if (req.files?.['video'] && req.files['video'][0]) {
+                if (blog.video && blog.video.public_id) {
+                    await cloudinary.uploader.destroy(blog.video.public_id, { resource_type: 'video' });
+                }
+
+                const videoFile = req.files['video'][0];
+                blog.video = {
+                    url: videoFile.path,
+                    caption: '',
+                    public_id: videoFile.filename
+                };
+            }
         }
 
         if (tags !== undefined) {

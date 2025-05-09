@@ -3,8 +3,14 @@ const router = express.Router();
 const controller = require('../controller/Admin/blogs.controller');
 const { upload } = require('../middleware/upload.middleware');
 
-router.post('/create', upload.array('images', 10), controller.createBlog)
-router.put('/update/:id', upload.array('images', 10), controller.updateBlog)
+router.post('/create', upload.fields([
+    { name: 'images', maxCount: 10 },
+    { name: 'video', maxCount: 1 }
+]), controller.createBlog)
+router.put('/update/:id', upload.fields([
+    { name: 'images', maxCount: 10 },
+    { name: 'video', maxCount: 1 }
+]), controller.updateBlog)
 router.delete('/delete/:id', controller.deleteBlog)
 router.get('/', controller.getBlog)
 router.put('/update-status/:id', controller.updateBlogStatus)
