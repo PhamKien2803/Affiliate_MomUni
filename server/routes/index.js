@@ -8,8 +8,8 @@ const blogCustomerRoute = require("./blog-customer.router")
 
 module.exports = (app) => {
     const api = "/api";
-    app.use(api + '/blog', blogsRoute)
-    app.use(api + '/blog-customer', blogCustomerRoute)
+    app.use(api + '/admin/blog', blogsRoute)
+    app.use(api + '/blog', blogCustomerRoute)
     app.use(api + '/auth', usersRoute)
     app.use(api + '/comment', commentRoute)
     app.use(api + '/rating', ratingRoute)
