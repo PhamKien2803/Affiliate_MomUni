@@ -1,5 +1,6 @@
 const slugify = require("slugify");
 const Blogs = require("../../model/blogs.model");
+const Analytics = require("../../model/analytics.model")
 
 module.exports.createBlog = async (req, res) => {
     try {
@@ -10,6 +11,16 @@ module.exports.createBlog = async (req, res) => {
         req.body.slug = slugify(title, { lower: true, strict: true });
         const newBlog = new Blogs(req.body);
         await newBlog.save();
+        const newAnalytics = new Analytics({
+            blogId: newBlog._id,
+            action: "create",
+            affiliateUrl: null,
+            revenue: 0,
+            ip: req.ip,
+            userAgent: req.headers['user-agent'],
+            timestamp: new Date()
+        })
+        await newAnalytics.save();
         res.json({
             code: 201,
             message: "Create Blog Successfully"
@@ -29,7 +40,16 @@ module.exports.deleteBlog = async (req, res) => {
         await Blogs.findByIdAndUpdate(id, {
             status: true
         });
-
+        const deleteAnalyticsBlog = await Analytics.deleteMany({blogId: id});
+        if (!deleteAnalyticsBlog) {
+            return res.status(404).json({
+                message: "Analytics not found"
+            })
+        }
+        if (!deleteAnalyticsBlog) {
+            return res.status(404).json({ message: 'Blog not found' });
+        }
+        await Blogs.findByIdAndDelete(id);
         res.status(200).json({
             code: 200,
             message: 'Blog deleted successfully'

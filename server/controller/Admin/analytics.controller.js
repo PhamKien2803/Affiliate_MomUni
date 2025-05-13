@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Analytics = require("../../model/analytics.model");
 const { getClientIp } = require("../../config/ipConfig")
 
@@ -21,7 +20,7 @@ exports.getAnalytics = async (req, res) => {
                 totalRevenue: { $sum: "$revenue" }
             }
         };
-        const analyticsData = await mongoose.model("Analytics").aggregate([match, group]);
+        const analyticsData = await Analytics.aggregate([match, group]);
         res.status(200).json(analyticsData);
     } catch (error) {
         console.error('Error fetching analytics:', error);
