@@ -5,6 +5,7 @@ const notificationRoute = require("./notification.router")
 const commentRoute = require("./comment.router")
 const ratingRoute = require("./rating.router")
 const blogCustomerRoute = require("./blog-customer.router")
+const analyticsRoute = require("./analytics.router")
 
 module.exports = (app) => {
     const api = "/api";
@@ -15,4 +16,5 @@ module.exports = (app) => {
     app.use(api + '/rating', ratingRoute)
     app.use(api + '/expert-form', expertFormRoute)
     app.use(api + '/notification', notificationRoute)
+    app.use(api + '/analytics', analyticsRoute)
 }

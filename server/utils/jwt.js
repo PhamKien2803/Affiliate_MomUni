@@ -47,6 +47,7 @@ const verifyToken = (token) => {
         decoded.data = decryptData(decoded.data);
         return decoded;
     } catch (error) {
+        console.log("Token không hợp lệ:", error.message);
         return null;
     }
 };
