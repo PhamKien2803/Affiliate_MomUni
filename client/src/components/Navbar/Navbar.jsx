@@ -1,8 +1,15 @@
 // src/components/Navbar/Navbar.jsx
+import { useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.scss';
 import TopBar from '../TopBar/TopBar';
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <header>
       <TopBar />
@@ -21,7 +28,7 @@ function Navbar() {
         </ul>
         <div className={styles.actions}>
           <span className={styles.search}>🔍</span>
-          <span>Log in</span>
+          <span onClick={handleLoginClick} style={{ cursor: 'pointer' }}>Log in</span>
           <span>Cabinet</span>
           <span>Cart</span>
         </div>
