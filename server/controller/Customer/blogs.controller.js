@@ -28,3 +28,21 @@ module.exports.getBlogById = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server, vui lòng thử lại sau' });
     }
 };
+
+module.exports.getAllBlogs = async (req, res) => {
+    try {
+        const blogs = await Blogs.find().lean();
+
+        if (!blogs || blogs.length === 0) {
+            return res.status(404).json({ message: 'Không có blog nào' });
+        }
+
+        res.status(200).json({
+            message: 'Lấy danh sách blog thành công',
+            blogs,
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách blog:', error);
+        res.status(500).json({ message: 'Lỗi server, vui lòng thử lại sau' });
+    }
+}
