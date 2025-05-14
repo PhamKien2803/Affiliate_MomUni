@@ -1,0 +1,15 @@
+/* src/components/FilterBar/FilterBar.module.scss */
+.filterBar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  .filterBar label {
+    margin-right: 0.5rem;
+  }
+  .filterBar select {
+    padding: 0.3rem;
+    font-size: 0.9rem;
+  }
+  

@@ -1,0 +1,64 @@
+/* src/pages/ProductPage.module.scss */
+.productDetail {
+    display: flex;
+    background-color: #f4f0e7;
+    padding: 2rem;
+  }
+  .imageContainer img {
+    max-width: 300px;
+    width: 100%;
+    margin-right: 2rem;
+  }
+  .info {
+    flex: 1;
+  }
+  .info h1 {
+    font-family: serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .price {
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  .addBtn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+  }
+  .saveBtn {
+    background-color: transparent;
+    color: #000;
+    border: 1px solid #000;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+  }
+  .details {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+  }
+  .details h3 {
+    margin-top: 1rem;
+  }
+  .highlights {
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    padding: 2rem 0;
+  }
+  .highlights div {
+    width: 45%;
+    text-align: center;
+  }
+  .highlights strong {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .highlights p {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  

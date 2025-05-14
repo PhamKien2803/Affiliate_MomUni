@@ -9,15 +9,17 @@ module.exports.getBlogById = async (req, res) => {
             return res.status(400).json({ message: 'ID blog không hợp lệ' });
         }
 
-        const blog = await Blogs.findByIdAndUpdate(
-            id,
-            { $inc: { viewCount: 1 } },
-            { new: true }
-        ).lean();
+        const blog = await Blogs.findOne({
+            _id: id,
+            status: 'active',
+            deleted: false
+        }).lean();
 
         if (!blog) {
-            return res.status(404).json({ message: 'Blog không tồn tại' });
+            return res.status(404).json({ message: 'Blog không tồn tại hoặc đã bị xóa' });
         }
+
+        await Blogs.findByIdAndUpdate(id, { $inc: { viewCount: 1 } });
 
         res.status(200).json({
             message: 'Lấy thông tin blog thành công',
