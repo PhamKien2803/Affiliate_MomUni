@@ -1,9 +1,6 @@
 // src/App.jsx
 import * as React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./page/HomePage";
-import CategoryPage from "./page/CategoryPage";
-import ProductPage from "./page/ProductPage";
 import LoginAdminPage from "./page/Auth/LoginComponents";
 import ForgotPassword from "./page/Auth/ForgotPassword";
 import VerifyOTP from './page/Auth/VerifyOTP';
@@ -13,6 +10,9 @@ import PublicRoute from './routes/PublicRoute';
 import { mainRoute } from "./routes/mainRoute";
 import { routesAdmin } from "./routes/routes";
 import PrivateRoute from "./routes/PrivateRoute";
+import HomePage from "./page/Customer/HomePage";
+import CategoryPage from './page/Customer/CategoryPage';
+import ProductPage from "./page/Customer/ProductPage";
 
 function App() {
   return (

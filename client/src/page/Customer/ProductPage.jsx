@@ -1,7 +1,7 @@
 // src/pages/ProductPage.jsx
-import Navbar from '../components/Navbar/Navbar';
-import Breadcrumb from '../components/Breadcrumb/Breadcrumb';
-import Footer from '../components/Footer/Footer';
+import Navbar from '../../components/Navbar/Navbar';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
+import Footer from '../../components/Footer/Footer';
 import styles from './ProductPage.module.scss';
 
 function ProductPage() {
