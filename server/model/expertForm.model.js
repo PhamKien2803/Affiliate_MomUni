@@ -8,13 +8,13 @@ const ExpertFormSchema = new mongoose.Schema({
     topic: { type: String, required: true },
 
     isHandled: { type: Boolean, default: false },
-    handledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    handledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
     handledAt: { type: Date },
 
     replies: [{
         message: { type: String, required: true },
         repliedAt: { type: Date, default: Date.now },
-        repliedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users' }
+        repliedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' }
     }],
 
     createdAt: { type: Date, default: Date.now }

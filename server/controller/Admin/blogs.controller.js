@@ -71,7 +71,6 @@ module.exports.createBlog = async (req, res) => {
 module.exports.deleteBlog = async (req, res) => {
     try {
         const { id } = req.params;
-
         const blog = await Blogs.findById(id);
         if (!blog) {
             return res.status(404).json({ message: 'Blog not found' });
@@ -84,14 +83,12 @@ module.exports.deleteBlog = async (req, res) => {
                 }
             }
         }
-
         blog.deleted = true;
         await blog.save();
-
         await Blogs.findByIdAndUpdate(id, {
             status: true
         });
-        const deleteAnalyticsBlog = await Analytics.deleteMany({blogId: id});
+        const deleteAnalyticsBlog = await Analytics.deleteMany({ blogId: id });
         if (!deleteAnalyticsBlog) {
             return res.status(404).json({
                 message: "Analytics not found"

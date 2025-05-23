@@ -3,6 +3,7 @@ const router = express.Router();
 const controller = require('../controller/Admin/blogs.controller');
 const { upload } = require('../middleware/upload.middleware');
 
+// /admin/blog
 router.post('/create', upload.fields([
     { name: 'images', maxCount: 10 },
     { name: 'video', maxCount: 1 }

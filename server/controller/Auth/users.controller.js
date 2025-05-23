@@ -111,6 +111,59 @@ exports.loginAccount = async (req, res) => {
     }
 };
 
+// exports.loginAccount = async (req, res) => {
+//     try {
+//         const { username, password } = req.body;
+//         if (!username || !password) {
+//             return res
+//                 .status(400)
+//                 .json({ message: "Please enter complete information !" });
+//         }
+
+//         const user = await Users.findOne({ username });
+//         if (!user) {
+//             return res.status(404).json({
+//                 message: "Account not created !!",
+//             });
+//         }
+//         if (!(await bcrypt.compare(password, user.password))) {
+//             return res
+//                 .status(401)
+//                 .json({ message: "Username or password is incorrect!!" });
+//         }
+//         const accessTokenPayload = {
+//             id: user._id,
+//             role: user.role,
+//             name: user.name,
+//             username: user.username
+//         };
+//         const accessToken = createAccessToken(accessTokenPayload);
+//         const refreshToken = createRefreshToken();
+
+//         await Users.findByIdAndUpdate(
+//             user._id,
+//             { re_token: refreshToken },
+//             { new: true }
+//         );
+
+//         setAuthCookies(res, accessToken, refreshToken);
+//         return res.status(200).json({
+//             message: "Login successfully",
+//             user: {
+//                 id: user._id,
+//                 username: user.username,
+//                 name: user.name || user.username,
+//                 role: user.role,
+//             },
+//         });
+
+//     } catch (error) {
+//         console.error("Login Error:", error);
+//         return res
+//             .status(500)
+//             .json({ message: "Error while logging in", error: error.message });
+//     }
+// };
 
 //API: /api/auth/admin-profile
 exports.getAdminProfile = async (req, res) => {

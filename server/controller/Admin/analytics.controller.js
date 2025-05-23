@@ -1,6 +1,7 @@
 const Analytics = require("../../model/analytics.model");
 const { getClientIp } = require("../../config/ipConfig")
 
+// API: /analytic/
 exports.getAnalytics = async (req, res) => {
     try {
         const { startDate, endDate } = req.query;
@@ -28,6 +29,7 @@ exports.getAnalytics = async (req, res) => {
     }
 }
 
+// API: /analytic/total-blogs
 exports.getTotalBlogs = async (req, res) => {
     try {
         const totalBlogs = await Analytics.distinct("blogId").countDocuments();
@@ -36,7 +38,7 @@ exports.getTotalBlogs = async (req, res) => {
         return res.status(500).json({ message: "Error fetching total blogs", error: error.message });
     }
 };
-
+// API: /analytic/total-views
 exports.getTotalViews = async (req, res) => {
     try {
         const totalViews = await Analytics.countDocuments({ action: "view" });
@@ -46,6 +48,7 @@ exports.getTotalViews = async (req, res) => {
     }
 };
 
+// API: /analytic/total-visitors
 exports.getTotalVisitors = async (req, res) => {
     try {
         const totalVisitors = await Analytics.distinct("ip").countDocuments();
@@ -55,7 +58,7 @@ exports.getTotalVisitors = async (req, res) => {
     }
 };
 
-
+// API: /analytic/track-action
 exports.trackActionIp = async (req, res) => {
     try {
         const ip = getClientIp(req);
