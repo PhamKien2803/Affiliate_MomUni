@@ -15,16 +15,16 @@ import axiosInstance from "../../helper/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const pastelPinkPalette = {
-    primary: "#F48FB1",
-    primaryDarker: "#F06292",
-    secondary: "#FFC1D6",
-    backgroundLight: "#FFF3F5",
+const newPalette = {
+    primary: "#CA877E",
+    primaryDarker: "#B8736B",
+    secondary: "#E6A599",
+    backgroundLight: "#FAF0EE",
     cardBackground: "#FFFFFF",
     textDark: "#333333",
     textLight: "#555555",
     textOnPrimary: "#FFFFFF",
-    boxShadow: "rgba(244, 143, 177, 0.35)",
+    boxShadow: "rgba(202, 135, 126, 0.3)",
 };
 
 const StyledCard = styled(MuiCard)(({ theme }) => ({
@@ -34,10 +34,10 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
     width: "100%",
     padding: theme.spacing(4),
     gap: theme.spacing(3),
-    boxShadow: `0px 10px 30px ${pastelPinkPalette.boxShadow}`,
+    boxShadow: `0px 10px 30px ${newPalette.boxShadow}`,
     borderRadius: "20px",
-    backgroundColor: pastelPinkPalette.cardBackground,
-    color: pastelPinkPalette.textDark,
+    backgroundColor: newPalette.cardBackground,
+    color: newPalette.textDark,
     textAlign: "center",
     [theme.breakpoints.up("sm")]: {
         width: "450px",
@@ -46,25 +46,25 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
 
 const StyledTextField = styled(TextField)(() => ({
     "& label": {
-        color: pastelPinkPalette.textLight,
+        color: newPalette.textLight,
     },
     "& label.Mui-focused": {
-        color: pastelPinkPalette.primary,
+        color: newPalette.primary,
     },
     "& .MuiInputBase-input": {
-        color: pastelPinkPalette.textDark,
+        color: newPalette.textDark,
         borderRadius: "12px",
     },
     "& .MuiOutlinedInput-root": {
         borderRadius: "12px",
         "& fieldset": {
-            borderColor: pastelPinkPalette.secondary,
+            borderColor: newPalette.secondary,
         },
         "&:hover fieldset": {
-            borderColor: pastelPinkPalette.primary,
+            borderColor: newPalette.primary,
         },
         "&.Mui-focused fieldset": {
-            borderColor: pastelPinkPalette.primary,
+            borderColor: newPalette.primary,
             borderWidth: "2px",
         },
     },
@@ -104,7 +104,7 @@ const ForgotPassword = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 minHeight: "100vh",
-                backgroundColor: pastelPinkPalette.backgroundLight,
+                backgroundColor: newPalette.backgroundLight,
                 padding: 2,
             }}
         >
@@ -112,7 +112,7 @@ const ForgotPassword = () => {
                 <MailOutlineIcon
                     sx={{
                         fontSize: "3.5rem",
-                        color: pastelPinkPalette.primary,
+                        color: newPalette.primary,
                         mb: 0,
                     }}
                 />
@@ -120,14 +120,14 @@ const ForgotPassword = () => {
                     variant="h5"
                     sx={{
                         fontWeight: 700,
-                        color: pastelPinkPalette.primary,
+                        color: newPalette.primary,
                         textTransform: "uppercase",
                     }}
                 >
                     Quên Mật Khẩu
                 </Typography>
 
-                <Typography sx={{ color: pastelPinkPalette.textLight, mb: 1, fontSize: "0.95rem" }}>
+                <Typography sx={{ color: newPalette.textLight, mb: 1, fontSize: "0.95rem" }}>
                     Nhập địa chỉ email của bạn, chúng tôi sẽ gửi mã OTP để bạn đặt lại mật khẩu.
                 </Typography>
 
@@ -149,35 +149,35 @@ const ForgotPassword = () => {
                     sx={{
                         py: 1.5,
                         borderRadius: "12px",
-                        backgroundColor: pastelPinkPalette.primary,
-                        color: pastelPinkPalette.textOnPrimary,
+                        backgroundColor: newPalette.primary,
+                        color: newPalette.textOnPrimary,
                         fontWeight: "bold",
                         fontSize: "1rem",
-                        boxShadow: `0 4px 15px ${alpha(pastelPinkPalette.primary, 0.3)}`,
+                        boxShadow: `0 4px 15px ${alpha(newPalette.primary, 0.3)}`,
                         "&:hover": {
-                            backgroundColor: pastelPinkPalette.primaryDarker,
-                            boxShadow: `0 6px 20px ${alpha(pastelPinkPalette.primaryDarker, 0.4)}`,
+                            backgroundColor: newPalette.primaryDarker,
+                            boxShadow: `0 6px 20px ${alpha(newPalette.primaryDarker, 0.4)}`,
                         },
                         "&.Mui-disabled": {
-                            backgroundColor: alpha(pastelPinkPalette.primary, 0.5),
+                            backgroundColor: alpha(newPalette.primary, 0.5),
                         }
                     }}
                 >
-                    {loading ? <CircularProgress size={24} sx={{ color: pastelPinkPalette.textOnPrimary }} /> : "Gửi mã OTP"}
+                    {loading ? <CircularProgress size={24} sx={{ color: newPalette.textOnPrimary }} /> : "Gửi mã OTP"}
                 </Button>
 
-                <Typography sx={{ color: pastelPinkPalette.textLight, fontSize: "0.9rem", mt: 2 }}>
+                <Typography sx={{ color: newPalette.textLight, fontSize: "0.9rem", mt: 2 }}>
                     Đã nhớ mật khẩu?{" "}
                     <MUILink
                         component={RouterLink}
                         to="/login"
                         sx={{
-                            color: pastelPinkPalette.primary,
+                            color: newPalette.primary,
                             fontWeight: "bold",
                             textDecoration: "none",
                             "&:hover": {
                                 textDecoration: "underline",
-                                color: pastelPinkPalette.primaryDarker,
+                                color: newPalette.primaryDarker,
                             },
                         }}
                     >

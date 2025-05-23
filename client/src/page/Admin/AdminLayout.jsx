@@ -36,25 +36,34 @@ import { ThemeProvider, createTheme, alpha } from "@mui/material/styles";
 import menuItems from "./menuItems";
 import axiosInstance from "../../helper/axiosInstance";
 import { toast } from "react-toastify";
-const drawerWidth = 260;
 
+const drawerWidth = 260;
 const getAppTheme = (mode) => {
+  const newPrimaryMain = "#CA877E";
+  const newPrimaryDarker = "#B8736B";
+  const lightPrimaryContrastText = "#422C28";
+  const darkPrimaryContrastText = "#FFFFFF";
+
   const lightPalette = {
-    primary: { main: "#F48FB1", contrastText: "#333333" },
-    secondary: { main: "#FFC1D6", contrastText: "#333333" },
-    background: { default: "#FFF3F5", paper: "#FFFFFF" },
-    text: { primary: "#333333", secondary: "#555555" },
-    action: { active: "#F48FB1", hover: alpha("#F48FB1", 0.08) },
-    divider: alpha("#333333", 0.12),
+    primary: { main: newPrimaryMain, contrastText: lightPrimaryContrastText },
+    secondary: { main: "#E6A599", contrastText: "#333333" },
+    background: { default: "#FAF0EE", paper: "#FFFFFF" },
+    text: { primary: "#422C28", secondary: "#6D5550" },
+    action: { active: newPrimaryMain, hover: alpha(newPrimaryMain, 0.08) },
+    divider: alpha("#422C28", 0.12),
+    error: { main: "#D32F2F" },
+    success: { main: "#2E7D32" },
   };
 
   const darkPalette = {
-    primary: { main: "#F48FB1", contrastText: "#ffffff" },
-    secondary: { main: "#FFA8B8", contrastText: "#333333" },
-    background: { default: "#28232A", paper: "#3A333D" },
-    text: { primary: "#F5F5F5", secondary: "#B0AAB3" },
-    action: { active: "#F48FB1", hover: alpha("#F48FB1", 0.1) },
-    divider: alpha("#F5F5F5", 0.12),
+    primary: { main: newPrimaryMain, contrastText: darkPrimaryContrastText },
+    secondary: { main: "#D99A8F", contrastText: "#FFFFFF" },
+    background: { default: "#302927", paper: "#423A38" },
+    text: { primary: "#F5E9E7", secondary: "#D3C1BD" },
+    action: { active: newPrimaryMain, hover: alpha(newPrimaryMain, 0.1) },
+    divider: alpha("#F5E9E7", 0.12),
+    error: { main: "#EF5350" },
+    success: { main: "#66BB6A" },
   };
 
   return createTheme({
@@ -68,9 +77,50 @@ const getAppTheme = (mode) => {
       caption: { fontSize: '0.75rem', }
     },
     components: {
-      MuiAppBar: { styleOverrides: { root: { boxShadow: "0px 2px 4px -1px rgba(0,0,0,0.05)", }, }, },
-      MuiDrawer: { styleOverrides: { paper: { borderRightWidth: mode === 'light' ? '1px' : '0px', }, }, },
-      MuiPaper: { styleOverrides: { root: { backgroundImage: 'none', } } }
+      MuiAppBar: {
+        styleOverrides: {
+          root: ({ theme: currentTheme }) => ({
+            boxShadow: currentTheme.palette.mode === 'light'
+              ? `0px 2px 4px -1px ${alpha(currentTheme.palette.text.primary, 0.08)}`
+              : `0px 2px 8px -1px ${alpha(currentTheme.palette.common.black, 0.25)}`,
+          }),
+        },
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: ({ theme: currentTheme }) => ({
+            borderRightWidth: currentTheme.palette.mode === 'light' ? '1px' : '0px',
+            borderRightColor: currentTheme.palette.divider,
+          }),
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          }
+        }
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: '8px',
+            textTransform: 'none',
+          }
+        }
+      },
+      MuiListItemButton: {
+        styleOverrides: {
+          root: ({ theme: currentTheme }) => ({
+            borderRadius: "8px",
+            '&.Mui-selected': {
+              '&:hover': {
+                backgroundColor: alpha(currentTheme.palette.primary.main, 0.85),
+              },
+            },
+          })
+        }
+      }
     },
   });
 };
@@ -82,7 +132,7 @@ const AdminLayout = () => {
   const [userAnchorEl, setUserAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
+    const savedTheme = localStorage.getItem("themeMode");
     return savedTheme === "dark";
   });
   const [notifications, setNotifications] = useState([]);
@@ -95,7 +145,7 @@ const AdminLayout = () => {
 
 
   useEffect(() => {
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
+    localStorage.setItem("themeMode", darkMode ? "dark" : "light");
   }, [darkMode]);
 
   const theme = useMemo(() => getAppTheme(darkMode ? "dark" : "light"), [darkMode]);
@@ -131,11 +181,12 @@ const AdminLayout = () => {
 
   const handleLogout = async () => {
     try {
+      await axiosInstance.post("/auth/logout");
     } catch (error) {
       console.error("Logout API call failed:", error);
     } finally {
       localStorage.removeItem("currentUser");
-      localStorage.removeItem("theme");
+      localStorage.removeItem("themeMode");
       navigate("/login");
     }
   };
@@ -167,45 +218,56 @@ const AdminLayout = () => {
     <>
       <Box sx={{ p: 2, textAlign: "center", display: 'flex', alignItems: 'center', justifyContent: 'center', height: 64, borderBottom: `1px solid ${theme.palette.divider}` }}>
         <MomUniIcon sx={{ color: theme.palette.primary.main, fontSize: '2rem', mr: 1 }} />
-        <Typography variant="h6" sx={{ color: theme.palette.primary.main }}>
+        <Typography variant="h6" sx={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>
           MomUni Admin
         </Typography>
       </Box>
       <List sx={{ p: 1 }}>
         {menuItems.map(({ text, icon, path }) => {
-          const isActive = location.pathname === path || (path !== '/admin-dashboard' && location.pathname.startsWith(path) && path !== '/admin-dashboard/');
-          let itemTextColor, itemIconColor, itemBgColor;
+          const isBaseDashboard = path === '/admin-dashboard';
+          const isActive = isBaseDashboard
+            ? location.pathname === path
+            : location.pathname.startsWith(path) && path !== '/admin-dashboard';
+          let itemTextColor = isActive ? theme.palette.primary.contrastText : theme.palette.text.secondary;
+          let itemIconColor = isActive ? theme.palette.primary.contrastText : theme.palette.text.secondary;
+          let itemBgColor = isActive ? theme.palette.primary.main : "transparent";
+
           let hoverTextColor, hoverIconColor, hoverBgColor;
 
           if (isActive) {
-            itemBgColor = theme.palette.primary.main;
-            itemTextColor = theme.palette.primary.contrastText;
-            itemIconColor = theme.palette.primary.contrastText;
+            hoverBgColor = alpha(theme.palette.primary.main, 0.85);
+            hoverTextColor = theme.palette.primary.contrastText;
+            hoverIconColor = theme.palette.primary.contrastText;
           } else {
-            itemBgColor = "transparent";
-            itemTextColor = theme.palette.text.secondary;
-            itemIconColor = theme.palette.text.secondary;
-          }
-          hoverBgColor = alpha(theme.palette.primary.main, isActive ? 0.2 : 0.12);
-          if (theme.palette.mode === 'light') {
-            hoverTextColor = theme.palette.text.primary;
-            hoverIconColor = theme.palette.text.primary;
-          } else {
+            hoverBgColor = alpha(theme.palette.primary.main, 0.1);
             hoverTextColor = theme.palette.primary.main;
             hoverIconColor = theme.palette.primary.main;
           }
+
           return (
             <ListItemButton
               key={text} component={Link} to={path} selected={isActive}
               sx={{
-                margin: theme.spacing(0.5, 0), borderRadius: "8px", color: itemTextColor, backgroundColor: itemBgColor,
+                margin: theme.spacing(0.5, 0),
+                color: itemTextColor,
+                backgroundColor: itemBgColor,
                 transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
-                "& .MuiListItemIcon-root": { color: itemIconColor, minWidth: "40px", transition: 'color 0.2s ease-in-out', },
-                "&:hover": { backgroundColor: hoverBgColor, color: hoverTextColor, ".MuiListItemIcon-root": { color: hoverIconColor, }, },
+                "& .MuiListItemIcon-root": {
+                  color: itemIconColor,
+                  minWidth: "40px",
+                  transition: 'color 0.2s ease-in-out',
+                },
+                "&:hover": {
+                  backgroundColor: hoverBgColor,
+                  color: hoverTextColor,
+                  ".MuiListItemIcon-root": {
+                    color: hoverIconColor,
+                  },
+                },
               }}
             >
               <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text} primaryTypographyProps={{ fontWeight: isActive ? '600' : '400' }} />
             </ListItemButton>
           );
         })}
@@ -226,7 +288,7 @@ const AdminLayout = () => {
 
         <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", p: { xs: 2, sm: 3 }, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
           <AppBar position="sticky"
-            sx={{ bgcolor: "background.paper", color: "text.primary", borderRadius: "12px", mb: 3, top: { xs: theme.spacing(1), sm: theme.spacing(2) }, width: 'auto', boxShadow: theme.shadows[2] }}
+            sx={{ bgcolor: "background.paper", color: "text.primary", borderRadius: "12px", mb: 3, top: { xs: theme.spacing(1), sm: theme.spacing(2) }, width: 'auto' }}
           >
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -238,14 +300,12 @@ const AdminLayout = () => {
                 </Typography>
               </Box>
 
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
                 <Tooltip title={darkMode ? "Chế độ sáng" : "Chế độ tối"}>
                   <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
                     {darkMode ? <Brightness7 /> : <Brightness4 />}
                   </IconButton>
                 </Tooltip>
-
-                {/* Notification Bell */}
                 <Tooltip title="Thông báo">
                   <IconButton onClick={handleNotificationMenuOpen} color="inherit">
                     <Badge badgeContent={unreadCount} color="error" max={99}>
@@ -284,18 +344,16 @@ const AdminLayout = () => {
                     notifications.map((notification) => (
                       <MenuItem
                         key={notification._id}
-                        onClick={() => {
-                        }}
                         sx={{
                           py: 1.5, px: 2, display: 'flex', alignItems: 'flex-start', gap: 1.5,
-                          bgcolor: !notification.isRead ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+                          bgcolor: !notification.isRead ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
                           borderBottom: `1px solid ${theme.palette.divider}`,
                           '&:last-child': { borderBottom: 'none' },
-                          '&:hover': { bgcolor: alpha(theme.palette.action.hover, 0.1) }
+                          '&:hover': { bgcolor: alpha(theme.palette.action.hover, 0.15) }
                         }}
                       >
                         <Box sx={{ flexGrow: 1 }}>
-                          <Typography variant="body2" sx={{ fontWeight: !notification.isRead ? 'bold' : 'normal', whiteSpace: 'normal' }}>
+                          <Typography variant="body2" sx={{ fontWeight: !notification.isRead ? '600' : 'normal', whiteSpace: 'normal', color: 'text.primary' }}>
                             {notification.message || "Nội dung thông báo không có."}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
@@ -306,13 +364,13 @@ const AdminLayout = () => {
                           {!notification.isRead && (
                             <Tooltip title="Đánh dấu đã đọc">
                               <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleMarkAsRead(notification._id); }}>
-                                <MarkReadIcon fontSize="small" sx={{ color: theme.palette.success ? theme.palette.success.main : 'green' }} />
+                                <MarkReadIcon fontSize="small" sx={{ color: theme.palette.success.main }} />
                               </IconButton>
                             </Tooltip>
                           )}
                           <Tooltip title="Xóa thông báo">
                             <IconButton size="small" onClick={(e) => { e.stopPropagation(); handleDeleteNotification(notification._id); }}>
-                              <DeleteIcon fontSize="small" sx={{ color: theme.palette.error ? theme.palette.error.main : 'red' }} />
+                              <DeleteIcon fontSize="small" sx={{ color: theme.palette.error.main }} />
                             </IconButton>
                           </Tooltip>
                         </Box>
@@ -320,8 +378,6 @@ const AdminLayout = () => {
                     ))
                   )}
                 </Menu>
-
-                {/* User Profile Menu (remains the same) */}
                 <IconButton onClick={handleUserMenu} color="inherit">
                   <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.main', color: 'primary.contrastText' }}>A</Avatar>
                 </IconButton>
@@ -340,10 +396,9 @@ const AdminLayout = () => {
                 </Menu>
               </Box>
             </Toolbar>
-            {/* <StatisticsPage /> */}
           </AppBar>
           <Outlet />
-          <Box sx={{ display: { xs: 'none', sm: 'block' }, position: 'fixed', bottom: 0, left: 0, right: 0, bgcolor: theme.palette.background.paper, p: 2, textAlign: 'center', borderTop: `1px solid ${theme.palette.divider}` }}>
+          <Box component="footer" sx={{ mt: 'auto', py: 2, px: 3, textAlign: 'center', borderTop: `1px solid ${theme.palette.divider}`, bgcolor: 'background.paper' }}>
             <Typography variant="caption" color="text.secondary">
               © {new Date().getFullYear()} MomUni. All rights reserved.
             </Typography>

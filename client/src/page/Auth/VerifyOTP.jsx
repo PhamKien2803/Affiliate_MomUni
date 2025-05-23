@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     Button,
@@ -15,16 +15,16 @@ import axiosInstance from "../../helper/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const pastelPinkPalette = {
-    primary: "#F48FB1",
-    primaryDarker: "#F06292",
-    secondary: "#FFC1D6",
-    backgroundLight: "#FFF3F5",
+const newPalette = {
+    primary: "#CA877E",
+    primaryDarker: "#B8736B",
+    secondary: "#E6A599",
+    backgroundLight: "#FAF0EE",
     cardBackground: "#FFFFFF",
     textDark: "#333333",
     textLight: "#555555",
     textOnPrimary: "#FFFFFF",
-    boxShadow: "rgba(244, 143, 177, 0.35)",
+    boxShadow: "rgba(202, 135, 126, 0.3)",
 };
 
 const StyledCard = styled(MuiCard)(({ theme }) => ({
@@ -34,10 +34,10 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
     width: "100%",
     padding: theme.spacing(4),
     gap: theme.spacing(2.5),
-    boxShadow: `0px 10px 30px ${pastelPinkPalette.boxShadow}`,
+    boxShadow: `0px 10px 30px ${newPalette.boxShadow}`,
     borderRadius: "20px",
-    backgroundColor: pastelPinkPalette.cardBackground,
-    color: pastelPinkPalette.textDark,
+    backgroundColor: newPalette.cardBackground,
+    color: newPalette.textDark,
     textAlign: "center",
     [theme.breakpoints.up("sm")]: {
         width: "480px",
@@ -51,7 +51,7 @@ const StyledOtpInput = styled(TextField)(() => ({
         textAlign: "center",
         fontSize: "1.5rem",
         fontWeight: "bold",
-        color: pastelPinkPalette.textDark,
+        color: newPalette.textDark,
         padding: "10px 0",
         height: "100%",
         boxSizing: "border-box",
@@ -60,13 +60,13 @@ const StyledOtpInput = styled(TextField)(() => ({
         height: "100%",
         borderRadius: "12px",
         "& fieldset": {
-            borderColor: pastelPinkPalette.secondary,
+            borderColor: newPalette.secondary,
         },
         "&:hover fieldset": {
-            borderColor: pastelPinkPalette.primary,
+            borderColor: newPalette.primary,
         },
         "&.Mui-focused fieldset": {
-            borderColor: pastelPinkPalette.primary,
+            borderColor: newPalette.primary,
             borderWidth: "2px",
         },
     },
@@ -170,7 +170,7 @@ const VerifyOTP = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 minHeight: "100vh",
-                backgroundColor: pastelPinkPalette.backgroundLight,
+                backgroundColor: newPalette.backgroundLight,
                 padding: 2,
             }}
         >
@@ -178,7 +178,7 @@ const VerifyOTP = () => {
                 <VpnKeyIcon
                     sx={{
                         fontSize: "3.5rem",
-                        color: pastelPinkPalette.primary,
+                        color: newPalette.primary,
                         mb: 1,
                     }}
                 />
@@ -186,14 +186,14 @@ const VerifyOTP = () => {
                     variant="h5"
                     sx={{
                         fontWeight: 700,
-                        color: pastelPinkPalette.primary,
+                        color: newPalette.primary,
                         textTransform: "uppercase",
                     }}
                 >
                     Xác Thực Mã OTP
                 </Typography>
 
-                <Typography sx={{ color: pastelPinkPalette.textLight, mb: 3, fontSize: "0.95rem" }}>
+                <Typography sx={{ color: newPalette.textLight, mb: 3, fontSize: "0.95rem" }}>
                     Nhập Mã OTP gồm 6 chữ số đã được gửi đến email của bạn.
                 </Typography>
 
@@ -211,7 +211,7 @@ const VerifyOTP = () => {
                         />
                     ))}
                 </Stack>
-                {verifying && <CircularProgress size={24} sx={{ color: pastelPinkPalette.primary, mb: 2 }} />}
+                {verifying && <CircularProgress size={24} sx={{ color: newPalette.primary, mb: 2 }} />}
 
                 <Button
                     variant="outlined"
@@ -228,16 +228,16 @@ const VerifyOTP = () => {
                         minWidth: '180px',
                         ...(canResend && !verifying
                             ? {
-                                borderColor: pastelPinkPalette.primary,
-                                color: pastelPinkPalette.primary,
+                                borderColor: newPalette.primary,
+                                color: newPalette.primary,
                                 "&:hover": {
-                                    backgroundColor: alpha(pastelPinkPalette.primary, 0.08),
-                                    borderColor: pastelPinkPalette.primaryDarker,
+                                    backgroundColor: alpha(newPalette.primary, 0.08),
+                                    borderColor: newPalette.primaryDarker,
                                 },
                             }
                             : {
-                                borderColor: alpha(pastelPinkPalette.textLight, 0.3),
-                                color: pastelPinkPalette.textLight,
+                                borderColor: alpha(newPalette.textLight, 0.3),
+                                color: newPalette.textLight,
                                 cursor: "default",
                                 opacity: 0.7,
                             }),

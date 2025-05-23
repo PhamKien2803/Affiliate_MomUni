@@ -22,16 +22,16 @@ import { getUserFromToken } from "../../helper/authHelper";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const pastelPinkPalette = {
-  primary: "#F48FB1",
-  primaryDarker: "#F06292",
-  secondary: "#FFC1D6",
-  backgroundLight: "#FFF3F5",
+const newPalette = {
+  primary: "#CA877E",
+  primaryDarker: "#B8736B",
+  secondary: "#E6A599",
+  backgroundLight: "#FAF0EE",
   cardBackground: "#FFFFFF",
   textDark: "#333333",
   textLight: "#555555",
   textOnPrimary: "#FFFFFF",
-  boxShadow: "rgba(244, 143, 177, 0.35)",
+  boxShadow: "rgba(202, 135, 126, 0.3)",
 };
 
 const StyledCard = styled(MuiCard)(({ theme }) => ({
@@ -41,10 +41,10 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
   width: "100%",
   padding: theme.spacing(4),
   gap: theme.spacing(2.5),
-  boxShadow: `0px 10px 30px ${pastelPinkPalette.boxShadow}`,
+  boxShadow: `0px 10px 30px ${newPalette.boxShadow}`,
   borderRadius: "20px",
-  backgroundColor: pastelPinkPalette.cardBackground,
-  color: pastelPinkPalette.textDark,
+  backgroundColor: newPalette.cardBackground,
+  color: newPalette.textDark,
   [theme.breakpoints.up("sm")]: {
     width: "430px",
   },
@@ -52,25 +52,25 @@ const StyledCard = styled(MuiCard)(({ theme }) => ({
 
 const StyledTextField = styled(TextField)(() => ({
   "& label": {
-    color: pastelPinkPalette.textLight,
+    color: newPalette.textLight,
   },
   "& label.Mui-focused": {
-    color: pastelPinkPalette.primary,
+    color: newPalette.primary,
   },
   "& .MuiInputBase-input": {
-    color: pastelPinkPalette.textDark,
+    color: newPalette.textDark,
     borderRadius: "12px",
   },
   "& .MuiOutlinedInput-root": {
     borderRadius: "12px",
     "& fieldset": {
-      borderColor: pastelPinkPalette.secondary,
+      borderColor: newPalette.secondary,
     },
     "&:hover fieldset": {
-      borderColor: pastelPinkPalette.primary,
+      borderColor: newPalette.primary,
     },
     "&.Mui-focused fieldset": {
-      borderColor: pastelPinkPalette.primary,
+      borderColor: newPalette.primary,
       borderWidth: "2px",
     },
   },
@@ -132,7 +132,7 @@ const LoginAdminPage = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        backgroundColor: pastelPinkPalette.backgroundLight,
+        backgroundColor: newPalette.backgroundLight,
         padding: 2,
       }}
     >
@@ -141,7 +141,7 @@ const LoginAdminPage = () => {
           <AdminPanelSettingsIcon
             sx={{
               fontSize: "3.5rem",
-              color: pastelPinkPalette.primary,
+              color: newPalette.primary,
               mb: 1,
             }}
           />
@@ -149,14 +149,14 @@ const LoginAdminPage = () => {
             variant="h5"
             sx={{
               fontWeight: 700,
-              color: pastelPinkPalette.primary,
+              color: newPalette.primary,
               textTransform: "uppercase",
               letterSpacing: "1px",
             }}
           >
             MomUni Admin
           </Typography>
-          <Typography variant="body2" sx={{ color: pastelPinkPalette.textLight }}>
+          <Typography variant="body2" sx={{ color: newPalette.textLight }}>
             Đăng nhập để quản lý hệ thống
           </Typography>
         </Box>
@@ -190,11 +190,11 @@ const LoginAdminPage = () => {
                     >
                       {showPassword ? (
                         <VisibilityOff
-                          sx={{ color: pastelPinkPalette.primary }}
+                          sx={{ color: newPalette.primary }}
                         />
                       ) : (
                         <Visibility
-                          sx={{ color: pastelPinkPalette.primary }}
+                          sx={{ color: newPalette.primary }}
                         />
                       )}
                     </IconButton>
@@ -213,15 +213,15 @@ const LoginAdminPage = () => {
                 control={
                   <Checkbox
                     sx={{
-                      color: pastelPinkPalette.secondary,
+                      color: newPalette.secondary,
                       "&.Mui-checked": {
-                        color: pastelPinkPalette.primary,
+                        color: newPalette.primary,
                       },
                     }}
                   />
                 }
                 label={
-                  <Typography sx={{ color: pastelPinkPalette.textLight, fontSize: '0.9rem' }}>
+                  <Typography sx={{ color: newPalette.textLight, fontSize: '0.9rem' }}>
                     Ghi nhớ tôi
                   </Typography>
                 }
@@ -229,12 +229,12 @@ const LoginAdminPage = () => {
               <Typography
                 onClick={() => navigate("/forgot-password")}
                 sx={{
-                  color: pastelPinkPalette.primary,
+                  color: newPalette.primary,
                   fontSize: "0.9rem",
                   cursor: "pointer",
                   "&:hover": {
                     textDecoration: "underline",
-                    color: pastelPinkPalette.primaryDarker,
+                    color: newPalette.primaryDarker,
                   },
                 }}
               >
@@ -252,22 +252,22 @@ const LoginAdminPage = () => {
               mt: 3,
               py: 1.5,
               borderRadius: "12px",
-              backgroundColor: pastelPinkPalette.primary,
-              color: pastelPinkPalette.textOnPrimary,
+              backgroundColor: newPalette.primary,
+              color: newPalette.textOnPrimary,
               fontWeight: "bold",
               fontSize: "1rem",
-              boxShadow: `0 4px 15px ${alpha(pastelPinkPalette.primary, 0.4)}`,
+              boxShadow: `0 4px 15px ${alpha(newPalette.primary, 0.4)}`,
               "&:hover": {
-                backgroundColor: pastelPinkPalette.primaryDarker,
-                boxShadow: `0 6px 20px ${alpha(pastelPinkPalette.primaryDarker, 0.5)}`,
+                backgroundColor: newPalette.primaryDarker,
+                boxShadow: `0 6px 20px ${alpha(newPalette.primaryDarker, 0.5)}`,
               },
               "&.Mui-disabled": {
-                backgroundColor: alpha(pastelPinkPalette.primary, 0.5),
-                color: alpha(pastelPinkPalette.textOnPrimary, 0.7),
+                backgroundColor: alpha(newPalette.primary, 0.5),
+                color: alpha(newPalette.textOnPrimary, 0.7),
               }
             }}
           >
-            {loading ? <CircularProgress size={24} sx={{ color: pastelPinkPalette.textOnPrimary }} /> : "Đăng Nhập"}
+            {loading ? <CircularProgress size={24} sx={{ color: newPalette.textOnPrimary }} /> : "Đăng Nhập"}
           </Button>
         </form>
       </StyledCard>

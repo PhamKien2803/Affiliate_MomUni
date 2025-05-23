@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField,
     Grid, Box, Typography, IconButton, Chip, Stack, CircularProgress, Autocomplete,
@@ -24,17 +24,15 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
 
     const [formData, setFormData] = useState(emptyBlog);
     const [loading, setLoading] = useState(false);
-    const initialFormDataRef = useRef(null); // To store initial form state for dirty checking
+    const initialFormDataRef = useRef(null);
     const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
 
 
     const imageInputRef = useRef(null);
     const videoInputRef = useRef(null);
 
-    // Function to check if form data has changed from its initial state
     const isFormDirty = () => {
         if (!initialFormDataRef.current) return false;
-        // Simple stringify comparison. For more complex scenarios, a deep-equal library might be better.
         return JSON.stringify(formData) !== JSON.stringify(initialFormDataRef.current);
     };
 
