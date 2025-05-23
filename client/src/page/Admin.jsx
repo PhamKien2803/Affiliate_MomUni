@@ -1,10 +1,10 @@
-// src/pages/HomePage.jsx
+// src/pages/AdminAdmin.jsx
 import Navbar from '../components/Navbar/Navbar';
 import HeroBanner from '../components/HeroBanner/HeroBanner';
 import ProductCard from '../components/ProductCard/ProductCard';
 import Footer from '../components/Footer/Footer';
 
-function HomePage() {
+function AdminPage() {
   return (
     <div>
       <Navbar />
@@ -37,4 +37,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default AdminPage;
