@@ -9,7 +9,8 @@ $color-pills-border: #cccccc;
 $color-pills-hover: #f0f0f0;
 $color-card-bg: #f9f9f9;
 $color-card-shadow: rgba(0, 0, 0, 0.1);
-$color-accent: #8ba17f; /* Màu nhấn hữu cơ */
+$color-accent: #8ba17f;
+/* Màu nhấn hữu cơ */
 $color-ellipsis: #666666;
 
 $font-base: Arial, sans-serif;
@@ -18,8 +19,9 @@ $font-base: Arial, sans-serif;
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(15px); // Tăng nhẹ khoảng cách trượt
+    transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -31,6 +33,7 @@ $font-base: Arial, sans-serif;
     opacity: 0;
     transform: translateY(5px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -41,40 +44,55 @@ $font-base: Arial, sans-serif;
 .blogPage {
   min-height: 100vh;
   width: 100%;
-  padding: 40px 25px; // Tăng padding chung
+  padding: 40px 25px;
   background-color: $color-background;
   color: $color-text;
   font-family: $font-base;
   box-sizing: border-box;
+
+  /* Loading and error states */
+  &[data-loading="true"],
+  &[data-error="true"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: darken($color-text, 10%);
+    background-color: $color-card-bg;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px $color-card-shadow;
+  }
 }
 
 /* — Breadcrumb (“Home”) — */
 .breadcrumb {
-  margin-bottom: 25px; // Tăng khoảng cách
+  margin-bottom: 25px;
 
   .homeLink {
     text-decoration: none;
     color: $color-accent;
     font-weight: bold;
-    font-size: 1.05rem; // Tăng nhẹ kích thước chữ
+    font-size: 1.05rem;
     transition: color 0.3s ease;
 
     &:hover {
-      color: darken($color-accent, 12%); // Làm đậm hơn khi hover
+      color: darken($color-accent, 12%);
     }
   }
 }
 
 /* — Khu Vực Lọc / Danh Mục — */
 .filterSection {
-  margin-bottom: 35px; // Tăng khoảng cách
+  margin-bottom: 35px;
 
   .filterList {
     list-style: none;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 15px; // Tăng khoảng cách giữa các mục
+    gap: 15px;
     padding: 0;
     margin: 0;
   }
@@ -82,18 +100,18 @@ $font-base: Arial, sans-serif;
   .filterItem {
     a {
       display: block;
-      padding: 10px 20px; // Tăng padding
+      padding: 10px 20px;
       text-decoration: none;
       color: $color-text;
       border: 1px solid $color-pills-border;
-      border-radius: 25px; // Bo tròn hơn
-      font-size: 0.95rem; // Tăng nhẹ kích thước chữ
-      transition: all 0.3s ease; // "all" để bao gồm transform
+      border-radius: 25px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
 
       &:hover {
         background-color: $color-pills-hover;
         border-color: darken($color-pills-border, 15%);
-        transform: translateY(-3px) scale(1.03); // Hiệu ứng nhấc lên và phóng to nhẹ
+        transform: translateY(-3px) scale(1.03);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
       }
     }
@@ -102,11 +120,12 @@ $font-base: Arial, sans-serif;
 
 .mainContent {
   padding-left: 100px;
+
   /* — Lưới Nội Dung Chính: Trái & Phải — */
   .content {
     display: grid;
     grid-template-columns: 3fr 1fr;
-    gap: 35px; // Tăng khoảng cách
+    gap: 35px;
     align-items: flex-start;
   }
 
@@ -119,26 +138,67 @@ $font-base: Arial, sans-serif;
     .blogGrid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px; // Tăng khoảng cách
-      margin-bottom: 35px; // Tăng khoảng cách
+      gap: 25px;
+      margin-bottom: 35px;
 
       .blogCard {
-        animation: fadeIn 0.6s ease-out forwards; // Thời gian animation dài hơn một chút
+        animation: fadeIn 0.6s ease-out forwards;
         background-color: $color-card-bg;
-        border-radius: 10px; // Bo tròn hơn
-        box-shadow: 0 3px 6px $color-card-shadow; // Tăng nhẹ box-shadow
-        height: 180px;
+        border-radius: 10px;
+        box-shadow: 0 3px 6px $color-card-shadow;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        color: darken($color-text, 20%);
-        font-size: 1.1rem;
-        text-align: center;
-        transition: transform 0.35s ease, box-shadow 0.35s ease; // Kéo dài transition
+        flex-direction: column;
+        text-decoration: none;
+        color: $color-text;
+        overflow: hidden;
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
 
         &:hover {
-          transform: translateY(-6px) scale(1.02); // Nhấc cao hơn và phóng to nhẹ
-          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); // Đổ bóng rõ hơn
+          transform: translateY(-6px) scale(1.02);
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .blogImage {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          border-bottom: 1px solid #eee;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: scale(1.05);
+            /* Hiệu ứng zoom nhẹ khi hover ảnh */
+          }
+        }
+
+        .noImage {
+          width: 100%;
+          height: 180px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: lighten($color-background, 5%);
+          color: $color-ellipsis;
+          font-size: 0.95rem;
+          font-weight: 500;
+          border-bottom: 1px solid #eee;
+          text-align: center;
+        }
+
+        .blogTitle {
+          padding: 15px 20px;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: darken($color-text, 10%);
+          margin: 0;
+          line-height: 1.4;
+          text-align: center;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: $color-accent;
+            /* Đổi màu tiêu đề khi hover */
+          }
         }
       }
     }
@@ -149,58 +209,52 @@ $font-base: Arial, sans-serif;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 15px; // Tăng khoảng cách
+      gap: 15px;
 
       /* — Nhóm trái: Số Trang & Dấu ... — */
       .pageNumbers {
         display: flex;
         align-items: center;
-        gap: 8px; // Giảm nhẹ gap giữa các số để không quá xa
+        gap: 8px;
 
         .pageNumber {
-          animation: subtleSlideUp 0.4s ease-out forwards; // Áp dụng animation trượt nhẹ
-          opacity: 0; // Bắt đầu với opacity 0 để animation có hiệu lực
-          animation-fill-mode: forwards; // Giữ trạng thái cuối của animation
-
+          animation: subtleSlideUp 0.4s ease-out forwards;
+          opacity: 0;
+          animation-fill-mode: forwards;
           background-color: transparent;
-          border: 1px solid transparent; // Thêm border transparent để giữ layout ổn định khi active
-          border-radius: 8px; // Bo tròn hơn
-          padding: 10px 16px; // Tăng padding
-          font-size: 1rem; // Tăng kích thước chữ
+          border: 1px solid transparent;
+          border-radius: 8px;
+          padding: 10px 16px;
+          font-size: 1rem;
           color: $color-text;
           cursor: pointer;
           font-weight: 500;
           transition: background-color 0.3s ease, color 0.3s ease,
             transform 0.2s ease, border-color 0.3s ease;
 
-          // Tạo delay cho animation của các nút kế tiếp nhau
           @for $i from 1 through 10 {
-            // Giả sử có tối đa 10 nút số trang
             &:nth-child(#{$i}) {
               animation-delay: #{$i * 0.05}s;
             }
           }
 
           &.active {
-            color: #fff; // Chữ trắng trên nền accent
+            color: #fff;
             background-color: $color-accent;
             font-weight: bold;
-            border-color: $color-accent; // Border cùng màu accent
-            transform: scale(1.05); // Hơi phóng to nút active
+            border-color: $color-accent;
+            transform: scale(1.05);
           }
 
           &:hover:not(.active) {
-            color: $color-accent; // Chữ màu accent khi hover
-            background-color: rgba(
-              $color-accent,
-              0.12
-            ); // Nền mờ hơn của màu accent
+            color: $color-accent;
+            background-color: rgba($color-accent, 0.12);
             border-color: rgba($color-accent, 0.3);
-            transform: scale(1.12); // Phóng to hơn khi hover
+            transform: scale(1.12);
           }
 
           &:active:not(.active) {
-            transform: scale(1.05); // Thu nhỏ lại một chút khi nhấn
+            transform: scale(1.05);
             background-color: rgba($color-accent, 0.2);
           }
         }
@@ -208,9 +262,9 @@ $font-base: Arial, sans-serif;
         .ellipsis {
           font-size: 1.2rem;
           color: $color-ellipsis;
-          padding: 0 8px; // Tăng padding
-          align-self: flex-end; // Căn chỉnh dấu ... cho đẹp hơn
-          padding-bottom: 8px; // Đẩy xuống một chút để ngang hàng với số
+          padding: 0 8px;
+          align-self: flex-end;
+          padding-bottom: 8px;
         }
       }
 
@@ -218,40 +272,37 @@ $font-base: Arial, sans-serif;
       .arrows {
         display: flex;
         align-items: center;
-        gap: 12px; // Tăng gap
+        gap: 12px;
 
         .arrow {
-          width: 36px; // Tăng kích thước nút
+          width: 36px;
           height: 36px;
           border-radius: 50%;
           border: none;
           background-color: $color-accent;
           color: #fff;
-          font-size: 1.1rem; // Tăng kích thước icon mũi tên
+          font-size: 1.1rem;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: background-color 0.3s ease, transform 0.25s ease; // Kéo dài transition transform
+          transition: background-color 0.3s ease, transform 0.25s ease;
 
           &:hover:not(:disabled) {
             background-color: darken($color-accent, 12%);
-            transform: scale(1.1); // Phóng to hơn khi hover
+            transform: scale(1.1);
           }
 
           &:active:not(:disabled) {
-            transform: scale(1.02); // Thu nhỏ lại một chút khi nhấn
+            transform: scale(1.02);
             background-color: darken($color-accent, 15%);
           }
 
           &:disabled {
-            background-color: lighten(
-              $color-accent,
-              15%
-            ); // Làm nhạt màu khi disabled
+            background-color: lighten($color-accent, 15%);
             opacity: 0.7;
             cursor: not-allowed;
-            transform: scale(1); // Đảm bảo không có transform khi disabled
+            transform: scale(1);
           }
         }
       }
@@ -263,16 +314,16 @@ $font-base: Arial, sans-serif;
 .sidebar {
   padding-right: 20px;
   position: sticky;
-  top: 30px; // Tăng khoảng cách top
+  top: 30px;
 
   .sidebarSection {
-    margin-bottom: 45px; // Tăng khoảng cách
+    margin-bottom: 45px;
 
     h3 {
-      font-size: 1.25rem; // Tăng kích thước chữ
-      margin-bottom: 15px; // Tăng khoảng cách
+      font-size: 1.25rem;
+      margin-bottom: 15px;
       color: $color-text;
-      border-bottom: 2px solid rgba($color-accent, 0.5); // Thêm đường gạch chân nhẹ
+      border-bottom: 2px solid rgba($color-accent, 0.5);
       padding-bottom: 8px;
     }
 
@@ -282,17 +333,17 @@ $font-base: Arial, sans-serif;
       margin: 0;
 
       li {
-        margin-bottom: 10px; // Tăng khoảng cách
+        margin-bottom: 10px;
 
         a {
           text-decoration: none;
           color: $color-text;
-          font-size: 0.98rem; // Tăng nhẹ kích thước chữ
-          transition: color 0.3s ease, padding-left 0.3s ease; // Thêm transition cho padding-left
+          font-size: 0.98rem;
+          transition: color 0.3s ease, padding-left 0.3s ease;
 
           &:hover {
             color: $color-accent;
-            padding-left: 5px; // Thụt vào một chút khi hover
+            padding-left: 5px;
           }
         }
       }
@@ -307,31 +358,39 @@ $font-base: Arial, sans-serif;
   }
 
   .blogPage {
-    padding: 30px 15px; // Điều chỉnh padding
+    padding: 30px 15px;
+
     .content {
       grid-template-columns: 1fr;
     }
+
     .sidebar {
       margin-top: 40px;
       padding-right: 0;
       position: static;
+
       h3 {
         font-size: 1.15rem;
       }
     }
+
     .leftColumn {
       .pagination {
         justify-content: center;
+
         .pageNumbers {
-          gap: 5px; // Giảm gap trên mobile
+          gap: 5px;
+
           .pageNumber {
-            padding: 8px 12px; // Giảm padding nút số
+            padding: 8px 12px;
             font-size: 0.9rem;
           }
+
           .ellipsis {
             padding-bottom: 6px;
           }
         }
+
         .arrows .arrow {
           width: 32px;
           height: 32px;
@@ -349,6 +408,7 @@ $font-base: Arial, sans-serif;
     .filterSection {
       .filterList {
         gap: 10px;
+
         .filterItem a {
           padding: 8px 15px;
           font-size: 0.85rem;
@@ -363,29 +423,44 @@ $font-base: Arial, sans-serif;
     .leftColumn {
       .blogGrid {
         gap: 15px;
+
         .blogCard {
-          height: 160px; // Giảm chiều cao card
-          font-size: 1rem;
+
+          .blogImage,
+          .noImage {
+            height: 160px;
+            /* Giảm chiều cao ảnh */
+          }
+
+          .blogTitle {
+            font-size: 1rem;
+            padding: 12px 15px;
+          }
         }
       }
+
       .pagination {
-        gap: 10px; // Tăng gap tổng thể của pagination
-        flex-direction: column; // Stack các nhóm trên mobile nhỏ
+        gap: 10px;
+        flex-direction: column;
+
         .pageNumbers {
-          order: 2; // Đưa số trang xuống dưới mũi tên
+          order: 2;
           margin-top: 10px;
         }
+
         .arrows {
           order: 1;
           width: 100%;
-          justify-content: center; // Căn giữa mũi tên
+          justify-content: center;
+
           .arrow {
-            width: 34px; // Tăng nhẹ lại kích thước mũi tên
+            width: 34px;
             height: 34px;
           }
         }
       }
     }
+
     .sidebar h3 {
       font-size: 1.1rem;
     }

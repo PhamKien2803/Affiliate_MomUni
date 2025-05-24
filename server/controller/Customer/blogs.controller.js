@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
 const Blogs = require('../../model/blogs.model');
 
-// API: GET /blog/:id
+// API: GET /blog/:slug
 module.exports.getBlogById = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'ID blog không hợp lệ' });
-        }
+        const { slug } = req.params;
 
         const blog = await Blogs.findOne({
-            _id: id,
+            slug: slug,
             status: 'active',
             deleted: false
         }).lean();
@@ -20,7 +16,7 @@ module.exports.getBlogById = async (req, res) => {
             return res.status(404).json({ message: 'Blog không tồn tại hoặc đã bị xóa' });
         }
 
-        await Blogs.findByIdAndUpdate(id, { $inc: { viewCount: 1 } });
+        await Blogs.findOneAndUpdate({ slug: slug }, { $inc: { viewCount: 1 } });
 
         res.status(200).json({
             message: 'Lấy thông tin blog thành công',
