@@ -6,6 +6,7 @@ import {
 import BlogManagementPage from "./BlogManagementPage";
 import ExpertFormManagementPage from "./ExpertFormManagementPage";
 import StatisticsPage from "./StatisticsPage";
+import BlogDetailPage from "./BlogDetailPage";
 
 const menuItems = [
   {
@@ -25,6 +26,10 @@ const menuItems = [
     icon: <ListAltIcon />,
     path: "/admin-dashboard/expert-forms",
     component: ExpertFormManagementPage
+  },
+  {
+    path: "/admin-dashboard/blogs-detail/:id",
+    component: BlogDetailPage
   }
 ];
 

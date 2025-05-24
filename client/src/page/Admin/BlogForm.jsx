@@ -185,17 +185,17 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.authorId || formData.authorId === 'ADMIN_ID_PLACEHOLDER') {
-            toast.error("Vui lòng cung cấp ID tác giả hợp lệ.");
-            return;
-        }
+        // if (!formData.authorId || formData.authorId === 'ADMIN_ID_PLACEHOLDER') {
+        //     toast.error("Vui lòng cung cấp ID tác giả hợp lệ.");
+        //     return;
+        // }
         setLoading(true);
 
         const submissionData = new FormData();
         submissionData.append('title', formData.title);
         submissionData.append('content', formData.content);
         submissionData.append('summary', formData.summary);
-        submissionData.append('authorId', formData.authorId);
+        // submissionData.append('authorId', formData.authorId);
 
         formData.tags.forEach(tag => submissionData.append('tags[]', tag));
 
@@ -325,7 +325,7 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
                                         size="small"
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                {/* <Grid item xs={12}>
                                     <TextField
                                         label="ID Tác giả (Admin)"
                                         name="authorId"
@@ -340,7 +340,7 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
                                             readOnly: !!blogData,
                                         }}
                                     />
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12}>
                                     <Autocomplete
                                         multiple
@@ -497,7 +497,7 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
                         </Grid>
                     </DialogContent>
                     <DialogActions sx={{ p: { xs: 2, sm: 2.5 }, borderTop: `1px solid ${theme.palette.divider}` }}>
-                        <Button onClick={requestClose} color="secondary" sx={{ textTransform: 'none' }}>Hủy</Button> {/* "Hủy" button calls requestClose */}
+                        <Button onClick={requestClose} color="secondary" sx={{ textTransform: 'none' }}>Hủy</Button>
                         <Button
                             type="submit"
                             variant="contained"

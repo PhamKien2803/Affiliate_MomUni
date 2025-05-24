@@ -5,9 +5,9 @@ const Analytics = require("../../model/analytics.model")
 
 module.exports.createBlog = async (req, res) => {
     try {
-        const { title, content, authorId } = req.body;
-        if (!title || !content || !authorId) {
-            return res.status(400).json({ message: 'Missing required fields: title, content, authorId' });
+        const { title, content } = req.body;
+        if (!title || !content) {
+            return res.status(400).json({ message: 'Missing required fields: title, content' });
         }
         req.body.slug = slugify(title, { lower: true, strict: true });
 

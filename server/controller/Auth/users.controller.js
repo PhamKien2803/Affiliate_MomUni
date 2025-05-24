@@ -192,25 +192,68 @@ exports.getAdminProfile = async (req, res) => {
 };
 
 //API: /api/auth/logout
+// exports.logOutAccount = async (req, res) => {
+//     try {
+//         const { re_token } = req.body;
+//         if (!re_token)
+//             return res
+//                 .status(400)
+//                 .json({ message: "You are not logged in or the token is invalid" });
+
+//         const tokenDoc = await Users.findOne({ re_token });
+//         if (!tokenDoc)
+//             return res.status(400).json({ message: "Token is invalid or expired" });
+//         await Users.deleteOne({ _id: tokenDoc._id });
+//         return res.status(200).json({ message: "Logout successful" });
+//     } catch (error) {
+//         return res
+//             .status(500)
+//             .json({ message: "Error while logging out", error: error.message });
+//     }
+// };
+
 exports.logOutAccount = async (req, res) => {
     try {
-        const { re_token } = req.body;
-        if (!re_token)
-            return res
-                .status(400)
-                .json({ message: "You are not logged in or the token is invalid" });
+        const refreshTokenFromCookie = req.cookies.refreshToken;
+        if (!refreshTokenFromCookie) {
+            res.clearCookie('accessToken', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: 'strict',
+            });
+            return res.status(200).json({ message: "Không có phiên hoạt động hoặc đã đăng xuất." });
+        }
+        const user = await Users.findOne({ re_token: refreshTokenFromCookie });
 
-        const tokenDoc = await Users.findOne({ re_token });
-        if (!tokenDoc)
-            return res.status(400).json({ message: "Token is invalid or expired" });
-        await Users.deleteOne({ _id: tokenDoc._id });
-        return res.status(200).json({ message: "Logout successful" });
+        if (user) {
+            user.re_token = null;
+            await user.save();
+        }
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: 'strict',
+            path: '/'
+        });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: 'strict',
+            path: '/'
+        });
+
+        return res.status(200).json({ message: "Đăng xuất thành công" });
+
     } catch (error) {
+        console.error("Lỗi khi đăng xuất:", error);
+        res.clearCookie('accessToken', { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: 'strict', path: '/' });
+        res.clearCookie('refreshToken', { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: 'strict', path: '/' });
         return res
             .status(500)
-            .json({ message: "Error while logging out", error: error.message });
+            .json({ message: "Lỗi trong quá trình đăng xuất", error: error.message });
     }
 };
+
 
 //API: /api/auth/forgot-password
 exports.forgotPassword = async (req, res) => {

@@ -182,10 +182,13 @@ const AdminLayout = () => {
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/auth/logout");
+      toast.success("Đăng xuất thành công!");
     } catch (error) {
       console.error("Logout API call failed:", error);
+      toast.error(error.response?.data?.message || "Lỗi khi đăng xuất. Vui lòng thử lại.");
     } finally {
-      localStorage.removeItem("currentUser");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("accessToken");
       localStorage.removeItem("themeMode");
       navigate("/login");
     }

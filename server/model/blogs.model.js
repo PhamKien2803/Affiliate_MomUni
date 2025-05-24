@@ -1,5 +1,4 @@
 const { default: mongoose } = require("mongoose");
-const Users = require('./users.model');
 
 const BlogsSchema = new mongoose.Schema({
     title: String,
@@ -7,7 +6,13 @@ const BlogsSchema = new mongoose.Schema({
     content: String,
     summary: String,
     tags: [String],
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    // authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+    authorId: {
+        type: String,
+        enum: ["Admin", "Chuyên Gia"],
+        required: true,
+        default: "Chuyên Gia",
+    },
     affiliateLinks: [
         {
             label: String,

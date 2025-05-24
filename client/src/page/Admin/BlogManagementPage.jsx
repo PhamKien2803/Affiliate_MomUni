@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../helper/axiosInstance';
 import { format } from 'date-fns';
 import BlogForm from './BlogForm';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 const BlogManagementPage = () => {
     const theme = useTheme();
@@ -178,11 +179,17 @@ const BlogManagementPage = () => {
                                             <Typography variant="subtitle2" fontWeight="medium" color="text.primary">
                                                 {blog.title}
                                             </Typography>
-                                            <MuiLink href={`/blog/${blog.slug}`} target="_blank" rel="noopener noreferrer" variant="caption" color="secondary.main">
-                                                Xem bài viết
+                                            <MuiLink
+                                                component={RouterLink}
+                                                to={`/admin-dashboard/blogs-detail/${blog._id}`}
+                                                variant="caption"
+                                                color="secondary.main"
+                                            >
+                                                Xem chi tiết
                                             </MuiLink>
                                         </TableCell>
-                                        <TableCell>{blog.authorId?.name || blog.authorId || 'N/A'}</TableCell>
+                                        {/* <TableCell>{blog.authorId?.username || blog.authorId || 'N/A'}</TableCell> */}
+                                        <TableCell>Chuyên Gia</TableCell>
                                         <TableCell>{formatDate(blog.createdAt)}</TableCell>
                                         <TableCell align="center">
                                             <Tooltip title={blog.status === 'active' ? "Đang hoạt động" : "Không hoạt động"}>
