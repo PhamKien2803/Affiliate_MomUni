@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Blogs = require('../../model/blogs.model');
 
+// API: GET /blog/:id
 module.exports.getBlogById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -31,6 +32,7 @@ module.exports.getBlogById = async (req, res) => {
     }
 };
 
+// API: GET /blog
 module.exports.getAllBlogs = async (req, res) => {
     try {
         const blogs = await Blogs.find().lean();

@@ -1,25 +1,47 @@
 /* ================================
-   Blog.module.scss
-   ================================ */
+ Blog.module.scss
+ ================================ */
 
-/* — Color & Typography Variables — */
+/* — Biến Màu & Chữ — */
 $color-background: #f4f0e7;
-
 $color-text: #333333;
 $color-pills-border: #cccccc;
 $color-pills-hover: #f0f0f0;
 $color-card-bg: #f9f9f9;
 $color-card-shadow: rgba(0, 0, 0, 0.1);
-$color-accent: #8ba17f; /* Organic accent color */
+$color-accent: #8ba17f; /* Màu nhấn hữu cơ */
 $color-ellipsis: #666666;
 
 $font-base: Arial, sans-serif;
 
-/* — Main Page Wrapper — */
+/* — Keyframes cho hiệu ứng — */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px); // Tăng nhẹ khoảng cách trượt
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtleSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* — Lớp Bọc Trang Chính — */
 .blogPage {
   min-height: 100vh;
   width: 100%;
-  padding: 30px 20px;
+  padding: 40px 25px; // Tăng padding chung
   background-color: $color-background;
   color: $color-text;
   font-family: $font-base;
@@ -28,31 +50,31 @@ $font-base: Arial, sans-serif;
 
 /* — Breadcrumb (“Home”) — */
 .breadcrumb {
-  margin-bottom: 20px;
+  margin-bottom: 25px; // Tăng khoảng cách
 
   .homeLink {
     text-decoration: none;
     color: $color-accent;
     font-weight: bold;
-    font-size: 1rem;
-    transition: color 0.2s;
+    font-size: 1.05rem; // Tăng nhẹ kích thước chữ
+    transition: color 0.3s ease;
 
     &:hover {
-      color: darken($color-accent, 10%);
+      color: darken($color-accent, 12%); // Làm đậm hơn khi hover
     }
   }
 }
 
-/* — Filter / Category Section — */
+/* — Khu Vực Lọc / Danh Mục — */
 .filterSection {
-  margin-bottom: 30px;
+  margin-bottom: 35px; // Tăng khoảng cách
 
   .filterList {
     list-style: none;
     display: flex;
-    justify-content: center; /* Center horizontally */
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 15px; // Tăng khoảng cách giữa các mục
     padding: 0;
     margin: 0;
   }
@@ -60,17 +82,19 @@ $font-base: Arial, sans-serif;
   .filterItem {
     a {
       display: block;
-      padding: 8px 18px;
+      padding: 10px 20px; // Tăng padding
       text-decoration: none;
       color: $color-text;
       border: 1px solid $color-pills-border;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      transition: background-color 0.2s, border-color 0.2s;
+      border-radius: 25px; // Bo tròn hơn
+      font-size: 0.95rem; // Tăng nhẹ kích thước chữ
+      transition: all 0.3s ease; // "all" để bao gồm transform
 
       &:hover {
         background-color: $color-pills-hover;
-        border-color: darken($color-pills-border, 10%);
+        border-color: darken($color-pills-border, 15%);
+        transform: translateY(-3px) scale(1.03); // Hiệu ứng nhấc lên và phóng to nhẹ
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
       }
     }
   }
@@ -78,30 +102,31 @@ $font-base: Arial, sans-serif;
 
 .mainContent {
   padding-left: 100px;
-  /* — Main Content Grid: Left & Right — */
+  /* — Lưới Nội Dung Chính: Trái & Phải — */
   .content {
     display: grid;
-    grid-template-columns: 3fr 1fr; /* Left: 75%, Right: 25% */
-    gap: 30px;
+    grid-template-columns: 3fr 1fr;
+    gap: 35px; // Tăng khoảng cách
     align-items: flex-start;
   }
 
-  /* — Left Column: Posts + Pagination — */
+  /* — Cột Trái: Bài Viết + Phân Trang — */
   .leftColumn {
     display: flex;
     flex-direction: column;
 
-    /* === Posts Grid === */
+    /* === Lưới Bài Viết === */
     .blogGrid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
+      gap: 25px; // Tăng khoảng cách
+      margin-bottom: 35px; // Tăng khoảng cách
 
       .blogCard {
+        animation: fadeIn 0.6s ease-out forwards; // Thời gian animation dài hơn một chút
         background-color: $color-card-bg;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px $color-card-shadow;
+        border-radius: 10px; // Bo tròn hơn
+        box-shadow: 0 3px 6px $color-card-shadow; // Tăng nhẹ box-shadow
         height: 180px;
         display: flex;
         align-items: center;
@@ -109,74 +134,124 @@ $font-base: Arial, sans-serif;
         color: darken($color-text, 20%);
         font-size: 1.1rem;
         text-align: center;
+        transition: transform 0.35s ease, box-shadow 0.35s ease; // Kéo dài transition
+
+        &:hover {
+          transform: translateY(-6px) scale(1.02); // Nhấc cao hơn và phóng to nhẹ
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); // Đổ bóng rõ hơn
+        }
       }
     }
 
-    /* === Pagination Controls === */
+    /* === Điều Khiển Phân Trang === */
     .pagination {
       display: flex;
-      justify-content: space-between; /* Left group / Right group */
+      justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px; // Tăng khoảng cách
 
-      /* —— Left group: Page Numbers & Ellipsis —— */
+      /* — Nhóm trái: Số Trang & Dấu ... — */
       .pageNumbers {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px; // Giảm nhẹ gap giữa các số để không quá xa
 
         .pageNumber {
+          animation: subtleSlideUp 0.4s ease-out forwards; // Áp dụng animation trượt nhẹ
+          opacity: 0; // Bắt đầu với opacity 0 để animation có hiệu lực
+          animation-fill-mode: forwards; // Giữ trạng thái cuối của animation
+
           background-color: transparent;
-          border: none;
-          padding: 8px 12px;
-          font-size: 0.95rem;
+          border: 1px solid transparent; // Thêm border transparent để giữ layout ổn định khi active
+          border-radius: 8px; // Bo tròn hơn
+          padding: 10px 16px; // Tăng padding
+          font-size: 1rem; // Tăng kích thước chữ
           color: $color-text;
           cursor: pointer;
-          transition: color 0.2s;
+          font-weight: 500;
+          transition: background-color 0.3s ease, color 0.3s ease,
+            transform 0.2s ease, border-color 0.3s ease;
+
+          // Tạo delay cho animation của các nút kế tiếp nhau
+          @for $i from 1 through 10 {
+            // Giả sử có tối đa 10 nút số trang
+            &:nth-child(#{$i}) {
+              animation-delay: #{$i * 0.05}s;
+            }
+          }
 
           &.active {
-            color: $color-accent;
+            color: #fff; // Chữ trắng trên nền accent
+            background-color: $color-accent;
             font-weight: bold;
+            border-color: $color-accent; // Border cùng màu accent
+            transform: scale(1.05); // Hơi phóng to nút active
           }
 
           &:hover:not(.active) {
-            color: darken($color-text, 10%);
+            color: $color-accent; // Chữ màu accent khi hover
+            background-color: rgba(
+              $color-accent,
+              0.12
+            ); // Nền mờ hơn của màu accent
+            border-color: rgba($color-accent, 0.3);
+            transform: scale(1.12); // Phóng to hơn khi hover
+          }
+
+          &:active:not(.active) {
+            transform: scale(1.05); // Thu nhỏ lại một chút khi nhấn
+            background-color: rgba($color-accent, 0.2);
           }
         }
 
         .ellipsis {
           font-size: 1.2rem;
           color: $color-ellipsis;
+          padding: 0 8px; // Tăng padding
+          align-self: flex-end; // Căn chỉnh dấu ... cho đẹp hơn
+          padding-bottom: 8px; // Đẩy xuống một chút để ngang hàng với số
         }
       }
 
-      /* —— Right group: Arrow Buttons —— */
+      /* — Nhóm phải: Nút Mũi Tên — */
       .arrows {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px; // Tăng gap
 
         .arrow {
-          width: 32px;
-          height: 32px;
+          width: 36px; // Tăng kích thước nút
+          height: 36px;
           border-radius: 50%;
           border: none;
           background-color: $color-accent;
           color: #fff;
-          font-size: 1rem;
+          font-size: 1.1rem; // Tăng kích thước icon mũi tên
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: background-color 0.2s;
+          transition: background-color 0.3s ease, transform 0.25s ease; // Kéo dài transition transform
 
           &:hover:not(:disabled) {
-            background-color: darken($color-accent, 10%);
+            background-color: darken($color-accent, 12%);
+            transform: scale(1.1); // Phóng to hơn khi hover
           }
+
+          &:active:not(:disabled) {
+            transform: scale(1.02); // Thu nhỏ lại một chút khi nhấn
+            background-color: darken($color-accent, 15%);
+          }
+
           &:disabled {
-            opacity: 0.5;
+            background-color: lighten(
+              $color-accent,
+              15%
+            ); // Làm nhạt màu khi disabled
+            opacity: 0.7;
             cursor: not-allowed;
+            transform: scale(1); // Đảm bảo không có transform khi disabled
           }
         }
       }
@@ -184,19 +259,21 @@ $font-base: Arial, sans-serif;
   }
 }
 
-/* — Right Column: Sidebar — */
+/* — Cột Phải: Sidebar — */
 .sidebar {
-  padding-right: 20px; /* Extra padding to line up with left whitespace */
+  padding-right: 20px;
   position: sticky;
-  top: 20px; /* Sticks under the top nav as you scroll */
+  top: 30px; // Tăng khoảng cách top
 
   .sidebarSection {
-    margin-bottom: 40px;
+    margin-bottom: 45px; // Tăng khoảng cách
 
     h3 {
-      font-size: 1.2rem;
-      margin-bottom: 12px;
+      font-size: 1.25rem; // Tăng kích thước chữ
+      margin-bottom: 15px; // Tăng khoảng cách
       color: $color-text;
+      border-bottom: 2px solid rgba($color-accent, 0.5); // Thêm đường gạch chân nhẹ
+      padding-bottom: 8px;
     }
 
     .sidebarList {
@@ -205,16 +282,17 @@ $font-base: Arial, sans-serif;
       margin: 0;
 
       li {
-        margin-bottom: 8px;
+        margin-bottom: 10px; // Tăng khoảng cách
 
         a {
           text-decoration: none;
           color: $color-text;
-          font-size: 0.95rem;
-          transition: color 0.2s;
+          font-size: 0.98rem; // Tăng nhẹ kích thước chữ
+          transition: color 0.3s ease, padding-left 0.3s ease; // Thêm transition cho padding-left
 
           &:hover {
             color: $color-accent;
+            padding-left: 5px; // Thụt vào một chút khi hover
           }
         }
       }
@@ -222,20 +300,43 @@ $font-base: Arial, sans-serif;
   }
 }
 
-/* — Responsive Adjustments — */
+/* — Điều Chỉnh Responsive — */
 @media (max-width: 1024px) {
+  .mainContent {
+    padding-left: 0;
+  }
+
   .blogPage {
+    padding: 30px 15px; // Điều chỉnh padding
     .content {
-      grid-template-columns: 1fr; /* Single column */
+      grid-template-columns: 1fr;
     }
     .sidebar {
       margin-top: 40px;
       padding-right: 0;
       position: static;
+      h3 {
+        font-size: 1.15rem;
+      }
     }
     .leftColumn {
       .pagination {
-        justify-content: center; /* Center pagination on smaller screens */
+        justify-content: center;
+        .pageNumbers {
+          gap: 5px; // Giảm gap trên mobile
+          .pageNumber {
+            padding: 8px 12px; // Giảm padding nút số
+            font-size: 0.9rem;
+          }
+          .ellipsis {
+            padding-bottom: 6px;
+          }
+        }
+        .arrows .arrow {
+          width: 32px;
+          height: 32px;
+          font-size: 1rem;
+        }
       }
     }
   }
@@ -243,26 +344,50 @@ $font-base: Arial, sans-serif;
 
 @media (max-width: 600px) {
   .blogPage {
-    padding: 20px 10px;
+    padding: 25px 10px;
 
     .filterSection {
       .filterList {
-        gap: 8px;
+        gap: 10px;
+        .filterItem a {
+          padding: 8px 15px;
+          font-size: 0.85rem;
+        }
       }
+    }
+
+    .mainContent .content {
+      gap: 25px;
     }
 
     .leftColumn {
       .blogGrid {
-        gap: 12px;
-      }
-      .pagination {
-        gap: 6px;
-
-        .arrows .arrow {
-          width: 28px;
-          height: 28px;
+        gap: 15px;
+        .blogCard {
+          height: 160px; // Giảm chiều cao card
+          font-size: 1rem;
         }
       }
+      .pagination {
+        gap: 10px; // Tăng gap tổng thể của pagination
+        flex-direction: column; // Stack các nhóm trên mobile nhỏ
+        .pageNumbers {
+          order: 2; // Đưa số trang xuống dưới mũi tên
+          margin-top: 10px;
+        }
+        .arrows {
+          order: 1;
+          width: 100%;
+          justify-content: center; // Căn giữa mũi tên
+          .arrow {
+            width: 34px; // Tăng nhẹ lại kích thước mũi tên
+            height: 34px;
+          }
+        }
+      }
+    }
+    .sidebar h3 {
+      font-size: 1.1rem;
     }
   }
 }
