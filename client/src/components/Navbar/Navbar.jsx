@@ -1,5 +1,5 @@
 // src/components/Navbar/Navbar.jsx
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.scss';
 import TopBar from '../TopBar/TopBar';
 
@@ -23,7 +23,7 @@ function Navbar() {
           <li>Home</li>
           <li>Kits & Travel</li>
           <li>Gifts</li>
-          <li>Read</li>
+          <li><Link to="/blog" className="navLink">Read</Link></li>
           <li>Stores</li>
         </ul>
         <div className={styles.actions}>

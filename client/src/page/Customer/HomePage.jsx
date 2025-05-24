@@ -1,17 +1,33 @@
 // src/pages/HomePage.jsx
+import { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import HeroBanner from '../../components/HeroBanner/HeroBanner';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import Footer from '../../components/Footer/Footer';
 
+import styles from './HomePage.module.scss';
+import ExpertFormSection from '../../components/ExpertFormSection/ExpertFormSection';
+
 function HomePage() {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // For now, we’ll just log the email and show a dummy success message.
+    console.log('Received email:', email);
+    setMessage('Thank you! We have received your email.');
+    setEmail(''); // clear the input
+  };
+
   return (
-    <div>
+    <div className={styles.component}>
       <Navbar />
       <HeroBanner />
-      <section style={{ padding: '2rem' }}>
-        <h2>A selection of affection-affirming gifts</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+
+      <section className={styles.productSection}>
+        <h2>A selection of affection‐affirming gifts</h2>
+        <div className={styles.productGrid}>
           <ProductCard
             name="Eleos Aromatique Hand Balm"
             tagline="Favoured formulation"
@@ -32,6 +48,10 @@ function HomePage() {
           />
         </div>
       </section>
+
+
+      <ExpertFormSection />
+
       <Footer />
     </div>
   );
