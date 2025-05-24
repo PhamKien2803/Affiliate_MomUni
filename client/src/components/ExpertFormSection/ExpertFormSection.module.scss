@@ -1,0 +1,198 @@
+/* src/components/ExpertFormSection/ExpertFormSection.module.scss */
+
+@import '../../styles/variables.scss'; 
+
+$dark-bg: #000;
+$text-white: #fff;
+$accent-color: #27a489;
+$input-bg: #f5f5f5;
+$input-border: #ccc;
+$radius: 6px;
+
+.wrapper {
+  position: relative;            /* needed for absolute children */
+  background-color: $dark-bg;
+  color: $text-white;
+  padding: 4rem 1rem;            /* top/bottom padding */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;       /* center the content block */
+  align-items: center;           /* not strictly needed since content uses z‐index */
+}
+
+/* Left illustration wrapper */
+.illustrationLeft {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 20%;                     
+  display: flex;
+  justify-content: center;        /* center the img within this 20% width */
+  align-items: flex-end;          
+}
+
+.imgLeft {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Main central content */
+.content {
+  position: relative;             /* ensure it layers above the absolutely positioned images */
+  z-index: 1;
+  max-width: 600px;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+/* Heading */
+.heading {
+  font-family: serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+/* Subheading paragraph */
+.subheading {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  color: lighten($text-white, 15%);
+}
+
+/* Form itself */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Individual field wrapper */
+.field {
+  width: 100%;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Field label */
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  color: lighten($text-white, 10%);
+}
+
+/* Email input */
+.input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid $input-border;
+  border-radius: $radius;
+  background-color: $input-bg;
+  font-size: 1rem;
+  color: #333;
+
+  &:focus {
+    outline: none;
+    border-color: $accent-color;
+  }
+}
+
+/* Message textarea */
+.textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid $input-border;
+  border-radius: $radius;
+  background-color: $input-bg;
+  font-size: 1rem;
+  color: #333;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: $accent-color;
+  }
+}
+
+/* Submit button */
+.button {
+  padding: 0.75rem 1.5rem;
+  background-color: $accent-color;
+  border: none;
+  border-radius: $radius;
+  color: $text-white;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: darken($accent-color, 5%);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Status message */
+.status {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #ffd27f; /* a light amber color for feedback */
+}
+
+/* “Click here” link below the form */
+.linkText {
+  font-size: 0.9rem;
+
+
+  a {
+    color: $accent-color;
+    text-decoration: underline;
+  
+  }
+}
+
+/* Right illustration wrapper */
+.illustrationRight {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 20%;                    
+  display: flex;
+  justify-content: center;       /* center horizontally within this 20% width */
+  align-items: center;           /* center vertically (redundant with translateY) */
+}
+
+.imgRight {
+  max-width: 100%;
+  height: auto;
+}
+
+.imgRight {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background-color: transparent;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
+    padding: 3rem 1rem;
+  }
+  .illustrationLeft,
+  .illustrationRight {
+    display: none; /* hide illustrations on smaller screens */
+  }
+  .content {
+    max-width: 100%;
+  }
+}

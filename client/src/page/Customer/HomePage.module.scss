@@ -1,0 +1,88 @@
+@import '../../styles/variables.scss'; // assumes you have $color-background, $color-text, $font-base, etc.
+
+/* Wrap the entire page in a light beige background and base typography */
+.component {
+  background-color: $color-background;
+  color: $color-text;
+  font-family: $font-base;
+  min-height: 100vh;
+}
+
+/* Products section padding */
+.productSection {
+  padding: 2rem;
+}
+
+/* A simple flex‐wrap grid for product cards */
+.productGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1.5rem;
+}
+
+/* New form section styling */
+.formSection {
+  background-color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin: 2rem auto 0;
+  max-width: 600px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Heading above the form */
+.formTitle {
+  font-family: serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: $color-text;
+}
+
+/* Form container layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Email input styling */
+.input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: $color-text;
+  }
+}
+
+/* Subscribe button styling */
+.button {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid $color-text;
+  background-color: transparent;
+  color: $color-text;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: $color-text;
+    color: #fff;
+  }
+}
+
+/* Success message */
+.success {
+  margin-top: 1rem;
+  color: green;
+  font-size: 0.9rem;
+}
