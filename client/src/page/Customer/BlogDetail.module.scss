@@ -1,0 +1,826 @@
+/* ================================
+ BlogDetail.module.scss
+ ================================ */
+
+/* — Biến Màu & Chữ — */
+$color-background: #f4f0e7;
+$color-text: #333333;
+$color-accent: #8ba17f;
+/* Màu nhấn hữu cơ */
+$color-card-shadow: rgba(0, 0, 0, 0.1);
+$color-border: #eee;
+$color-secondary: lighten($color-text, 20%);
+$color-star-active: #f4c107;
+
+$font-base: Arial, sans-serif;
+
+/* — Keyframes cho hiệu ứng — */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* — Lớp Bọc Trang Chính — */
+.blogDetailPage {
+    min-height: 100vh;
+    width: 100%;
+    padding: 40px 25px;
+    background-color: $color-background;
+    color: $color-text;
+    font-family: $font-base;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Loading and error states */
+    &[data-loading="true"],
+    &[data-error="true"] {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: $color-secondary;
+        background-color: $color-background;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        text-align: center;
+        padding: 20px;
+    }
+}
+
+/* — Breadcrumb — */
+.breadcrumb {
+    margin-bottom: 30px;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: 800px;
+    width: 100%;
+
+    .homeLink,
+    .blogLink,
+    .backLink {
+        text-decoration: none;
+        color: $color-accent;
+        font-weight: 600;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: darken($color-accent, 15%);
+        }
+    }
+
+    .breadcrumbSeparator {
+        color: $color-secondary;
+        font-weight: 400;
+    }
+
+    .currentPage {
+        color: darken($color-text, 10%);
+        font-weight: 500;
+    }
+}
+
+/* — Content Wrapper — */
+.contentWrapper {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* — Table of Contents — */
+.toc {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px $color-card-shadow;
+    margin-bottom: 20px;
+
+    h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: darken($color-text, 10%);
+        margin-bottom: 15px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+
+        &.subItem {
+            padding-left: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: $color-accent;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: darken($color-accent, 15%);
+            }
+        }
+    }
+}
+
+/* — Nội Dung Chính — */
+.content {
+    animation: fadeIn 0.8s ease-out forwards;
+
+    .blogTitle {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: darken($color-text, 15%);
+        margin-bottom: 25px;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    .meta {
+        font-size: 0.95rem;
+        color: $color-secondary;
+        margin-bottom: 35px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+
+        span {
+            display: inline-block;
+        }
+    }
+
+    .imageGallery {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 35px;
+
+        .blogImage {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px $color-card-shadow;
+        }
+    }
+
+    .noImage {
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: lighten($color-background, 5%);
+        color: $color-secondary;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .videoContainer {
+        margin-bottom: 35px;
+        display: flex;
+        justify-content: center;
+
+        .blogVideo {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px $color-card-shadow;
+        }
+    }
+
+    .noVideo {
+        margin-bottom: 20px;
+        margin-top: 20px;
+        width: 100%;
+        max-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: lighten($color-background, 5%);
+        color: $color-secondary;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .blogContent {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 35px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        border-left: 4px solid $color-accent;
+
+        p {
+            margin: 0 0 20px;
+        }
+
+        h2,
+        h3 {
+            color: darken($color-text, 10%);
+            margin: 30px 0 15px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        ul,
+        ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        blockquote {
+            border-left: 4px solid $color-accent;
+            padding: 15px 20px;
+            background: lighten($color-background, 5%);
+            margin: 20px 0;
+            font-style: italic;
+        }
+    }
+
+    .affiliateSection {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        margin-bottom: 35px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .affiliateButton {
+            display: inline-block;
+            background: $color-accent;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+
+            &:hover {
+                background: darken($color-accent, 10%);
+            }
+        }
+    }
+
+    .noAffiliate {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        margin-bottom: 35px;
+        text-align: center;
+        font-size: 1rem;
+        color: $color-secondary;
+    }
+
+    .ratingSection {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        margin-bottom: 35px;
+        text-align: center;
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: darken($color-text, 10%);
+            margin-bottom: 15px;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+
+            .star {
+                font-size: 1.5rem;
+                color: lighten($color-secondary, 20%);
+                cursor: pointer;
+                transition: color 0.3s ease;
+
+                &.active {
+                    color: $color-star-active;
+                }
+
+                &:hover {
+                    color: lighten($color-star-active, 10%);
+                }
+            }
+        }
+
+        p {
+            font-size: 1rem;
+            color: $color-secondary;
+        }
+
+        .submitRating {
+            background: $color-accent;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+
+            &:hover {
+                background: darken($color-accent, 10%);
+            }
+
+            &:disabled {
+                background: lighten($color-accent, 20%);
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .commentSection {
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+        margin-bottom: 35px;
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: darken($color-text, 10%);
+            margin-bottom: 20px;
+        }
+
+        .commentList {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+
+            .commentItem {
+                border-bottom: 1px solid $color-border;
+                padding: 15px 0;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                .commentHeader {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+
+                    .commentAuthor {
+                        font-weight: 600;
+                        color: darken($color-text, 10%);
+                    }
+
+                    .commentDate {
+                        font-size: 0.9rem;
+                        color: $color-secondary;
+                    }
+                }
+
+                .commentContent {
+                    font-size: 1rem;
+                    line-height: 1.6;
+                    color: $color-text;
+                }
+            }
+        }
+
+        .noComments {
+            font-size: 1rem;
+            color: $color-secondary;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .commentForm {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            .nameInput {
+                width: 100%;
+                padding: 15px;
+                border: 1px solid $color-border;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-family: $font-base;
+
+                &:focus {
+                    outline: none;
+                    border-color: $color-accent;
+                    box-shadow: 0 0 5px rgba($color-accent, 0.3);
+                }
+            }
+
+            .commentInput {
+                width: 100%;
+                min-height: 100px;
+                padding: 15px;
+                border: 1px solid $color-border;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-family: $font-base;
+                resize: vertical;
+
+                &:focus {
+                    outline: none;
+                    border-color: $color-accent;
+                    box-shadow: 0 0 5px rgba($color-accent, 0.3);
+                }
+            }
+
+            .submitComment {
+                background: $color-accent;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                align-self: flex-end;
+                transition: background 0.3s ease;
+
+                &:hover {
+                    background: darken($color-accent, 10%);
+                }
+            }
+        }
+    }
+
+    .tags {
+        font-size: 0.95rem;
+        color: $color-secondary;
+        margin-bottom: 25px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        .tag {
+            display: inline-block;
+            background: rgba($color-accent, 0.2);
+            color: $color-accent;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+    }
+
+    .noTags {
+        font-size: 0.95rem;
+        color: $color-secondary;
+        margin-bottom: 25px;
+        text-align: center;
+        background: #fff;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px $color-card-shadow;
+    }
+}
+
+/* — Pagination — */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    .pageButton {
+        padding: 10px 15px;
+        border: 1px solid $color-accent;
+        background-color: #fff;
+        color: $color-accent;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease;
+        box-shadow: 0 2px 4px $color-card-shadow;
+
+        &:hover:not(.disabledButton) {
+            background: $color-accent;
+            color: #fff;
+        }
+    }
+
+    .activePage {
+        background: $color-accent;
+        color: #fff;
+        border-color: $color-accent;
+        font-weight: 600;
+    }
+
+    .disabledButton {
+        background: lighten($color-secondary, 30%);
+        color: $color-secondary;
+        border-color: lighten($color-secondary, 30%);
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+/* — Responsive — */
+@media (max-width: 768px) {
+    .blogDetailPage {
+        padding: 30px 15px;
+    }
+
+    .contentWrapper {
+        gap: 20px;
+    }
+
+    .toc {
+        padding: 15px;
+    }
+
+    .content {
+        .blogTitle {
+            font-size: 1.9rem;
+        }
+
+        .meta {
+            font-size: 0.9rem;
+            gap: 10px;
+        }
+
+        .imageGallery,
+        .noImage {
+            max-height: 300px;
+        }
+
+        .videoContainer,
+        .noVideo {
+            max-height: 300px;
+        }
+
+        .blogContent {
+            font-size: 1rem;
+            padding: 20px;
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+        }
+
+        .affiliateSection {
+            padding: 15px;
+
+            .affiliateButton {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        .noAffiliate {
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+
+        .ratingSection {
+            padding: 15px;
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            .stars {
+                .star {
+                    font-size: 1.3rem;
+                }
+            }
+        }
+
+        .commentSection {
+            padding: 15px;
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            .commentList {
+                .commentItem {
+                    .commentHeader {
+                        flex-direction: column;
+                        gap: 5px;
+                    }
+                }
+            }
+
+            .commentForm {
+
+                .nameInput,
+                .commentInput {
+                    padding: 12px;
+                }
+            }
+        }
+
+        .tags,
+        .noTags {
+            font-size: 0.9rem;
+
+            .tag {
+                padding: 5px 12px;
+            }
+        }
+
+        .pagination {
+            gap: 8px;
+
+            .pageButton {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .blogDetailPage {
+        padding: 25px 10px;
+    }
+
+    .contentWrapper {
+        gap: 15px;
+    }
+
+    .toc {
+        padding: 10px;
+
+        h3 {
+            font-size: 1.2rem;
+        }
+
+        li a {
+            font-size: 0.95rem;
+        }
+    }
+
+    .content {
+        .blogTitle {
+            font-size: 1.6rem;
+        }
+
+        .meta {
+            font-size: 0.85rem;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .imageGallery,
+        .noImage {
+            max-height: 250px;
+        }
+
+        .videoContainer,
+        .noVideo {
+            max-height: 250px;
+        }
+
+        .blogContent {
+            font-size: 0.95rem;
+            padding: 15px;
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+        .affiliateSection {
+            padding: 10px;
+
+            .affiliateButton {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .noAffiliate {
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+
+        .ratingSection {
+            padding: 10px;
+
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            .stars {
+                .star {
+                    font-size: 1.2rem;
+                }
+            }
+
+            .submitRating {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .commentSection {
+            padding: 10px;
+
+            h3 {
+                font-size: 1.1rem;
+            }
+
+            .commentForm {
+
+                .nameInput,
+                .commentInput {
+                    padding: 10px;
+                    font-size: 0.9rem;
+                }
+
+                .submitComment {
+                    padding: 8px 15px;
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .tags,
+        .noTags {
+            font-size: 0.85rem;
+
+            .tag {
+                padding: 4px 10px;
+            }
+        }
+
+        .pagination {
+            gap: 6px;
+
+            .pageButton {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+        }
+    }
+}

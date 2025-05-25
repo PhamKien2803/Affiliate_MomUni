@@ -1,23 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Blog.module.scss";
 
 export default function Blog() {
-  // -------- Sample Data: 14 Placeholder Posts --------
-  const samplePosts = Array.from({ length: 14 }, (_, i) => ({
-    id: i + 1,
-    title: `Blog Post ${i + 1}`,
-  }));
+  // -------- State for Blog Data, Loading, and Error --------
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // -------- Fetch Blog Data from API --------
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/blog");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setBlogPosts(data.blogs || []); // Assuming API returns { blogs: [...] }
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
 
   // -------- Pagination State + Logic --------
   const postsPerPage = 6;
-  const totalPages = Math.ceil(samplePosts.length / postsPerPage);
+  const totalPages = Math.ceil(blogPosts.length / postsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Derive the posts to show on the current page
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = samplePosts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = blogPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   // Generate a list of “page indicators” (numbers and possibly ellipsis)
   const getPageNumbers = () => {
@@ -50,6 +69,26 @@ export default function Blog() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
+  // -------- Sidebar Data --------
+  // Recent Blogs: Sort by createdAt (newest first), limit to 4
+  const recentBlogs = [...blogPosts]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 4);
+
+  // Trending Blogs: Sort by viewCount (highest first), limit to 4
+  const trendingBlogs = [...blogPosts]
+    .sort((a, b) => b.viewCount - a.viewCount)
+    .slice(0, 4);
+
+  // -------- Render Loading, Error, or Content --------
+  if (loading) {
+    return <div className={styles.blogPage}>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.blogPage}>Error: {error}</div>;
+  }
+
   return (
     <div className={styles.blogPage}>
       {/* —— “Home” Link —— */}
@@ -60,7 +99,7 @@ export default function Blog() {
       </div>
 
       {/* —— Filter / Category Pills —— */}
-      <div className={styles.filterSection}>
+      {/* <div className={styles.filterSection}>
         <ul className={styles.filterList}>
           <li className={styles.filterItem}>
             <a href="#">All</a>
@@ -78,7 +117,8 @@ export default function Blog() {
             <a href="#">Lifestyle</a>
           </li>
         </ul>
-      </div>
+      </div> */}
+
       <div className={styles.mainContent}>
         {/* —— Main Content (Left: Posts + Pagination, Right: Sidebar) —— */}
         <div className={styles.content}>
@@ -87,9 +127,22 @@ export default function Blog() {
             {/* Blog Posts Grid */}
             <div className={styles.blogGrid}>
               {currentPosts.map((post) => (
-                <div key={post.id} className={styles.blogCard}>
-                  {post.title}
-                </div>
+                <Link
+                  key={post._id}
+                  to={`/blog/${post.slug}`}
+                  className={styles.blogCard}
+                >
+                  {post.images && post.images.length > 0 ? (
+                    <img
+                      src={post.images[0].url}
+                      alt={post.title}
+                      className={styles.blogImage}
+                    />
+                  ) : (
+                    <div className={styles.noImage}>No Image</div>
+                  )}
+                  <h2 className={styles.blogTitle}>{post.title}</h2>
+                </Link>
               ))}
             </div>
 
@@ -104,9 +157,9 @@ export default function Blog() {
                     ) : (
                       <button
                         className={`
-                        ${styles.pageNumber} 
-                        ${currentPage === num ? styles.active : ""}
-                      `}
+                          ${styles.pageNumber} 
+                          ${currentPage === num ? styles.active : ""}
+                        `}
                         onClick={() => handlePageClick(num)}
                       >
                         {num}
@@ -141,35 +194,21 @@ export default function Blog() {
             <div className={styles.sidebarSection}>
               <h3>Recent Blogs</h3>
               <ul className={styles.sidebarList}>
-                <li>
-                  <a href="#">Post Title One</a>
-                </li>
-                <li>
-                  <a href="#">Post Title Two</a>
-                </li>
-                <li>
-                  <a href="#">Post Title Three</a>
-                </li>
-                <li>
-                  <a href="#">Post Title Four</a>
-                </li>
+                {recentBlogs.map((blog) => (
+                  <li key={blog._id}>
+                    <Link to={`/blog/${blog.slug}`}>{blog.title}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className={styles.sidebarSection}>
               <h3>Trending Blogs</h3>
               <ul className={styles.sidebarList}>
-                <li>
-                  <a href="#">Trending Topic One</a>
-                </li>
-                <li>
-                  <a href="#">Trending Topic Two</a>
-                </li>
-                <li>
-                  <a href="#">Trending Topic Three</a>
-                </li>
-                <li>
-                  <a href="#">Trending Topic Four</a>
-                </li>
+                {trendingBlogs.map((blog) => (
+                  <li key={blog._id}>
+                    <Link to={`/blog/${blog.slug}`}>{blog.title}</Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </aside>
