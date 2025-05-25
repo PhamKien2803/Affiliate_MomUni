@@ -1,6 +1,6 @@
 /* src/components/ExpertFormSection/ExpertFormSection.module.scss */
 
-@import '../../styles/variables.scss'; 
+@import "../../styles/variables.scss";
 
 $dark-bg: #000;
 $text-white: #fff;
@@ -10,14 +10,14 @@ $input-border: #ccc;
 $radius: 6px;
 
 .wrapper {
-  position: relative;            /* needed for absolute children */
+  position: relative; /* needed for absolute children */
   background-color: $dark-bg;
   color: $text-white;
-  padding: 4rem 1rem;            /* top/bottom padding */
+  padding: 4rem 1rem; /* top/bottom padding */
   overflow: hidden;
   display: flex;
-  justify-content: center;       /* center the content block */
-  align-items: center;           /* not strictly needed since content uses z‐index */
+  justify-content: center; /* center the content block */
+  align-items: center; /* not strictly needed since content uses z‐index */
 }
 
 /* Left illustration wrapper */
@@ -25,10 +25,10 @@ $radius: 6px;
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 20%;                     
+  width: 20%;
   display: flex;
-  justify-content: center;        /* center the img within this 20% width */
-  align-items: flex-end;          
+  justify-content: center; /* center the img within this 20% width */
+  align-items: flex-end;
 }
 
 .imgLeft {
@@ -38,7 +38,7 @@ $radius: 6px;
 
 /* Main central content */
 .content {
-  position: relative;             /* ensure it layers above the absolutely positioned images */
+  position: relative; /* ensure it layers above the absolutely positioned images */
   z-index: 1;
   max-width: 600px;
   text-align: center;
@@ -149,11 +149,9 @@ $radius: 6px;
 .linkText {
   font-size: 0.9rem;
 
-
   a {
     color: $accent-color;
     text-decoration: underline;
-  
   }
 }
 
@@ -164,10 +162,10 @@ $radius: 6px;
   top: 50%;
   transform: translateY(-50%);
 
-  width: 20%;                    
+  width: 20%;
   display: flex;
-  justify-content: center;       /* center horizontally within this 20% width */
-  align-items: center;           /* center vertically (redundant with translateY) */
+  justify-content: center; /* center horizontally within this 20% width */
+  align-items: center; /* center vertically (redundant with translateY) */
 }
 
 .imgRight {

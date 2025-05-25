@@ -1,11 +1,16 @@
 // src/components/ExpertFormSection/ExpertFormSection.jsx
 import { useState } from 'react';
-import axios from 'axios';
 import styles from './ExpertFormSection.module.scss';
+import axiosInstance from "../../helper/axiosInstance";
 
 export default function ExpertFormSection() {
+  // 1. Bổ sung các state còn thiếu để khớp với API
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [phone, setPhone] = useState('');
+  const [topic, setTopic] = useState('');
+  const [question, setQuestion] = useState('');
+
   const [statusMsg, setStatusMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -15,16 +20,25 @@ export default function ExpertFormSection() {
     setIsSubmitting(true);
 
     try {
-      await axios.post('http://localhost:9999/api/expert-form/create', {
+      await axiosInstance.post('/expert-form/create', {
+        name,
         email,
-        message,
+        phone,
+        question,
+        topic,
       });
-      setStatusMsg('Thank you! Your submission has been received.');
+
+      setStatusMsg('Cảm ơn bạn! Câu hỏi của bạn đã được gửi thành công.');
+      setName('');
       setEmail('');
-      setMessage('');
+      setPhone('');
+      setTopic('');
+      setQuestion('');
+
     } catch (err) {
       console.error(err);
-      setStatusMsg('Oops! Something went wrong. Please try again.');
+      const errorMessage = err.response?.data?.message || 'Oops! Đã có lỗi xảy ra. Vui lòng thử lại.';
+      setStatusMsg(errorMessage);
     }
 
     setIsSubmitting(false);
@@ -32,9 +46,7 @@ export default function ExpertFormSection() {
 
   return (
     <section className={styles.wrapper}>
-      {/* Left Illustration (optional) */}
       <div className={styles.illustrationLeft}>
-        {/* If you have an SVG or image, you can replace the placeholder below */}
         <img
           src="/images/momandchild.jpg"
           alt="Hand Holding Note"
@@ -42,15 +54,25 @@ export default function ExpertFormSection() {
         />
       </div>
 
-      {/* Center Content (heading + form) */}
       <div className={styles.content}>
         <h2 className={styles.heading}>
-          Have some thought in mind?<br />
-          Let Us Know!
+          Có câu hỏi cho chuyên gia?<br />
+          Hãy cho chúng tôi biết!
         </h2>
 
-
         <form onSubmit={handleSubmit} className={styles.form}>
+          <label className={styles.field}>
+            <span className={styles.label}>Tên của bạn</span>
+            <input
+              type="text"
+              className={styles.input}
+              placeholder="Nguyễn Văn A"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
+
           <label className={styles.field}>
             <span className={styles.label}>Email</span>
             <input
@@ -64,13 +86,42 @@ export default function ExpertFormSection() {
           </label>
 
           <label className={styles.field}>
-            <span className={styles.label}>Your Message</span>
+            <span className={styles.label}>Số điện thoại</span>
+            <input
+              type="tel"
+              className={styles.input}
+              placeholder="0123 456 789"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </label>
+
+          <label className={styles.field}>
+            <span className={styles.label}>Chủ đề câu hỏi</span>
+            <select
+              className={styles.input}
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              required
+            >
+              <option value="">-- Chọn một chủ đề --</option>
+              <option value="Dinh dưỡng">Dinh dưỡng</option>
+              <option value="Sức khỏe">Sức khỏe</option>
+              <option value="Phát triển của bé">Phát triển của bé</option>
+              <option value="Tâm lý">Tâm lý</option>
+              <option value="Chủ đề khác">Chủ đề khác</option>
+            </select>
+          </label>
+
+          <label className={styles.field}>
+            <span className={styles.label}>Câu hỏi của bạn</span>
             <textarea
               className={styles.textarea}
-              placeholder="Share your thoughts…"
+              placeholder="Nhập nội dung câu hỏi của bạn tại đây..."
               rows={4}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
               required
             />
           </label>
@@ -80,22 +131,13 @@ export default function ExpertFormSection() {
             className={styles.button}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Submitting…' : 'Submit'}
+            {isSubmitting ? 'Đang gửi…' : 'Gửi câu hỏi'}
           </button>
 
           {statusMsg && <p className={styles.status}>{statusMsg}</p>}
         </form>
-
-        {/* <p className={styles.linkText}>
-          Click&nbsp;
-          <a href="#reviews" className={styles.link}>
-            here
-          </a>
-          &nbsp;to see what coffee lovers are saying about Your Dream Coffee!
-        </p> */}
       </div>
 
-      {/* Right Illustration (optional) */}
       <div className={styles.illustrationRight}>
         <img
           src="/images/milk2.jpg"
