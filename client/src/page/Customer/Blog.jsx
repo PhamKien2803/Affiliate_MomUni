@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Blog.module.scss";
+import axiosInstance from "../../helper/axiosInstance";
 
 export default function Blog() {
   // -------- State for Blog Data, Loading, and Error --------
@@ -12,12 +13,9 @@ export default function Blog() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/blog");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setBlogPosts(data.blogs || []); // Assuming API returns { blogs: [...] }
+        const response = await axiosInstance.get("/blog");
+        const blogs = response.data?.blogs || [];
+        setBlogPosts(blogs || []); // Assuming API returns { blogs: [...] }
         setLoading(false);
       } catch (err) {
         setError(err.message);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./BlogDetail.module.scss";
+import axiosInstance from "../../helper/axiosInstance";
 
 export default function BlogDetail() {
     const { slug } = useParams();
@@ -19,29 +20,17 @@ export default function BlogDetail() {
     useEffect(() => {
         const fetchBlogAndComments = async () => {
             try {
-                console.log(`Đang lấy bài viết với slug: ${slug}`);
-                const blogResponse = await fetch(`http://localhost:3000/api/blog/${slug}`);
-                if (!blogResponse.ok) {
-                    throw new Error(`Lỗi lấy bài viết! trạng thái: ${blogResponse.status}`);
-                }
-                const blogData = await blogResponse.json();
-                console.log("Phản hồi API bài viết:", blogData);
-                const blog = blogData.blog || blogData;
-                if (!blog) {
-                    throw new Error("Không tìm thấy dữ liệu bài viết trong phản hồi");
-                }
+                const blogResponse = await axiosInstance.get(`/blog/${slug}`);
+
+                const blog = blogResponse.data?.blog || blogResponse.data;
+
                 setBlog(blog);
 
-                console.log(`Đang lấy bình luận cho blogId: ${blog._id}`);
-                const commentsResponse = await fetch(
-                    `http://localhost:3000/api/comment?blogId=${blog._id}`
+                const commentsResponse = await axiosInstance.get(
+                    `/comment?blogId=${blog._id}`
                 );
-                if (!commentsResponse.ok) {
-                    throw new Error(`Lỗi lấy bình luận! trạng thái: ${commentsResponse.status}`);
-                }
-                const commentsData = await commentsResponse.json();
-                console.log("Phản hồi API bình luận:", commentsData);
-                setComments(commentsData.comments || commentsData || []);
+
+                setComments(commentsResponse.data?.comments || commentsResponse.data || []);
 
                 if (blog.content) {
                     const parser = new DOMParser();
@@ -88,21 +77,13 @@ export default function BlogDetail() {
         setCommenterName("");
 
         try {
-            console.log("Đang gửi bình luận:", { name: submittedName, content: submittedComment });
-            const response = await fetch(`http://localhost:3000/api/comment/user-comment`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    blogId: blog._id,
-                    content: submittedComment,
-                    name: submittedName,
-                }),
+            const response = await axiosInstance.post(`/comment/user-comment`, {
+                blogId: blog._id,
+                content: submittedComment,
+                name: submittedName,
             });
-            if (!response.ok) {
-                throw new Error(`Lỗi gửi bình luận! trạng thái: ${response.status}`);
-            }
-            const newCommentData = await response.json();
-            console.log("Phản hồi bình luận mới:", newCommentData);
+
+            const newCommentData = response.data;
             const updatedComment = {
                 ...newCommentData,
                 name: newCommentData.name || newCommentData.author || submittedName,
@@ -131,23 +112,14 @@ export default function BlogDetail() {
         if (userRating === 0 || ratingSubmitted) return;
 
         try {
-            console.log("Đang gửi đánh giá:", userRating);
-            const response = await fetch(`http://localhost:3000/api/rating/user-rating`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    blogId: blog._id,
-                    rating: userRating,
-                    userId: "anonymous",
-                }),
+            const response = await axiosInstance.post(`/rating/user-rating`, {
+                blogId: blog._id,
+                rating: userRating,
             });
-            if (!response.ok) {
-                throw new Error(`Lỗi gửi đánh giá! trạng thái: ${response.status}`);
-            }
-            const updatedBlog = await response.json();
-            console.log("Phản hồi đánh giá:", updatedBlog);
-            setBlog({ ...blog, averageRating: updatedBlog.averageRating || userRating });
+            const data = response.data;
+            setBlog({ ...blog, averageRating: data.averageRating || userRating });
             setRatingSubmitted(true);
+
         } catch (err) {
             console.error("Lỗi gửi đánh giá:", err);
             alert("Không thể gửi đánh giá. Vui lòng thử lại.");
@@ -344,9 +316,8 @@ export default function BlogDetail() {
                                     {currentComments
                                         .filter((comment) => comment.name && comment.name.trim())
                                         .map((comment) => {
-                                            console.log("Rendering comment:", comment);
                                             return (
-                                                <li key={comment.id} className={styles.commentItem}>
+                                                <li key={comment._id} className={styles.commentItem}>
                                                     <div className={styles.commentHeader}>
                                                         <span className={styles.commentAuthor}>{comment.name}</span>
                                                         <span className={styles.commentDate}>
