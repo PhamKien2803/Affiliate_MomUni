@@ -1,31 +1,235 @@
 /* src/components/Navbar/Navbar.module.scss */
+
+/* =====================
+   Navbar Container
+   ===================== */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f4f0e7;
-    padding: 1rem 2rem;
-    font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f0e7;
+  padding: 1rem 2rem;
+  font-family: sans-serif;
+  position: relative;  /* So dropdownPanels (position: absolute) are relative to this */
+  z-index: 100;
+}
+
+/* =====================
+   Logo (leftmost)
+   ===================== */
+.logo {
+  font-size: 1.5rem;
+  font-family: serif;
+  cursor: pointer;
+}
+
+/* =====================
+   Main Menu (center)
+   ===================== */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove position: relative here so dropdowns refer to .navbar instead */
+.menuItem {
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #333;
+  padding: 0.4rem 0;
+
+  &:hover {
+    color: #000;
   }
-  .logo {
-    font-size: 1.5rem;
-    font-family: serif;
+}
+
+/* =====================
+   Dropdown Panel
+   ===================== */
+/* Now absolutely positioned relative to .navbar, and always centered */
+.dropdownPanel {
+  position: absolute;
+  top: 100%;            /* Immediately below the navbar */
+  left: 50%;            /* Center horizontally in viewport */
+  transform: translateX(-50%);
+  width: 90vw;          /* Nearly full viewport width */
+  max-width: 1200px;    /* Cap the max width if desired */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: top center;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  z-index: 200;
+
+  /* Top row: mini categories + placeholder image */
+  .dropdownTop {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Left column: mini categories list */
+  .miniCategories {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h4 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: #555;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  /* Right column: placeholder image */
+  .dropdownImage {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+  }
+
+  /* Bottom row: product placeholders */
+  .dropdownProducts {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .productPlaceholder {
+      width: calc(25% - 1rem);
+      min-width: 120px;
+      height: 100px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  }
+}
+
+/* When any .menuItem is hovered, show the dropdownPanel */
+.menuItem:hover ~ .dropdownPanel,
+.menuItem:hover .dropdownPanel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* =====================
+   Search + Actions (rightmost)
+   ===================== */
+.actions {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  align-items: center;
+}
+
+/* Search container: icon + input */
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  font-size: 1rem;
+  color: #888;
+  pointer-events: none;
+}
+
+.searchInput {
+  padding: 0.4rem 0.8rem 0.4rem 2.2rem; /* space for icon on left */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 180px; /* adjust as needed */
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #999;
+  }
+}
+
+.loginLink {
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.icon {
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+/* =====================
+   Responsive Adjustments
+   ===================== */
+@media (max-width: 1024px) {
+  .dropdownPanel {
+    width: 95vw;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 0.8rem 1rem;
   }
   .menu {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
   }
-  .menu li {
-    cursor: pointer;
-    font-size: 0.95rem;
+  .searchInput {
+    width: 140px;
   }
-  .actions {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.9rem;
+  .dropdownPanel {
+    left: 0;
+    transform: translateX(0);
+    width: 100vw;
+    border-radius: 0;
   }
-  .search {
-    cursor: pointer;
-  }
-  
+}
