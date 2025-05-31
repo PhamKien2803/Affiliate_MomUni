@@ -229,3 +229,39 @@ module.exports.updateBlogStatus = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server, vui lòng thử lại sau' });
     }
 };
+
+module.exports.getBlogById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const baseQuery = {
+            status: 'active',
+            deleted: false
+        };
+
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            baseQuery._id = id;
+        } else {
+            baseQuery.slug = id;
+        }
+
+        const blog = await Blogs.findOneAndUpdate(
+            baseQuery,
+            { $inc: { viewCount: 1 } },
+            { new: true }
+        ).lean();
+
+        if (!blog) {
+            return res.status(404).json({ message: 'Blog không tồn tại hoặc đã bị xóa' });
+        }
+
+        res.status(200).json({
+            message: 'Lấy thông tin blog thành công',
+            blog,
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi lấy blog:', error);
+        res.status(500).json({ message: 'Lỗi server, vui lòng thử lại sau' });
+    }
+};

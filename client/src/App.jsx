@@ -14,7 +14,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import Blog from "./page/Customer/Blog";
 import CategoryPage from './page/Customer/CategoryPage';
 import ProductPage from './page/Customer/ProductPage';
-import BlogDetail from "./page/Customer/BlogDetail";
+import BlogDetailPage from "./page/Admin/BlogDetailPage";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
         <Route path="/product/resurrection-duet" element={<ProductPage />} />
         <Route path="/admin-dashboard" element={<AdminLayout />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogDetail />} />
+        <Route path="/blog-details" element={<BlogDetailPage />} />
 
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginAdminPage />} />
