@@ -5,13 +5,13 @@ const { upload } = require('../middleware/upload.middleware');
 
 // /admin/blog
 router.post('/create', upload.fields([
-    { name: 'images', maxCount: 10 },
-    { name: 'video', maxCount: 1 }
+    { name: 'newImages', maxCount: 10 },
+    { name: 'newVideo', maxCount: 1 }
 ]), controller.createBlog)
 router.get('/:id', controller.getBlogById);
 router.put('/update/:id', upload.fields([
-    { name: 'images', maxCount: 10 },
-    { name: 'video', maxCount: 1 }
+    { name: 'newImages', maxCount: 10 },
+    { name: 'newVideo', maxCount: 1 }
 ]), controller.updateBlog)
 router.delete('/delete/:id', controller.deleteBlog)
 router.get('/', controller.getBlog)

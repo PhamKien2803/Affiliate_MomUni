@@ -15,17 +15,29 @@ import Blog from "./page/Customer/Blog";
 import CategoryPage from './page/Customer/CategoryPage';
 import ProductPage from './page/Customer/ProductPage';
 import BlogDetailPage from "./page/Admin/BlogDetailPage";
+import BlogDetail from './page/Customer/BlogDetail';
+import HomePage2 from "./page/Guest/HomePage";
+import BlogPageMUI from "./page/Guest/Blog";
+import BlogPageDetails from "./page/Guest/BlogDetails";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        {/* <Route path="/" element={<HomePage />} /> */}
+        <Route path="/" element={<HomePage2 />} />
+        <Route path="/blog" element={<BlogPageMUI />} />
+        <Route path="/blog/:slug" element={<BlogPageDetails />} />
+
+
+
+
         <Route path="/category/hand" element={<CategoryPage />} />
         <Route path="/product/resurrection-duet" element={<ProductPage />} />
         <Route path="/admin-dashboard" element={<AdminLayout />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog-details" element={<BlogDetailPage />} />
+        {/* <Route path="/blog" element={<Blog />} /> */}
+        {/* <Route path="/blog/:slug" element={<BlogDetail />} /> */}
+        {/* <Route path="/blog-details" element={<BlogDetailPage />} /> */}
 
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginAdminPage />} />

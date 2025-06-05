@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import {
     Box, Typography, Paper, Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, Button, IconButton, CircularProgress, Tooltip,
-    Chip, Switch, Avatar, Link as MuiLink, TablePagination, Dialog
+    Chip, Switch, Avatar, Link as MuiLink, TablePagination, Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 import { useTheme, alpha } from '@mui/material/styles';
 import {
@@ -16,6 +19,7 @@ import axiosInstance from '../../helper/axiosInstance';
 import { format } from 'date-fns';
 import BlogForm from './BlogForm';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import BlogForm2 from './BlogForm2';
 
 const BlogManagementPage = () => {
     const theme = useTheme();
@@ -240,7 +244,14 @@ const BlogManagementPage = () => {
                 </>
             )}
 
-            <BlogForm
+            {/* <BlogForm
+                open={formOpen}
+                onClose={handleCloseForm}
+                blogData={selectedBlog}
+                onSaveSuccess={fetchBlogs}
+            /> */}
+
+            <BlogForm2
                 open={formOpen}
                 onClose={handleCloseForm}
                 blogData={selectedBlog}
