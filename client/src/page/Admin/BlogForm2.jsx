@@ -45,7 +45,7 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
         contentMarkdown: '',
         summary: '',
         authorId: '',
-        tags: [],
+        tags: '',
         images: [],
         video: null,
         affiliateLinks: [],
@@ -215,7 +215,6 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
         setFormData(prev => ({ ...prev, video: null }));
     };
 
-    const handleTagsChange = (event, newValue) => setFormData(prev => ({ ...prev, tags: newValue }));
     const handleAddAffiliateLink = () => setFormData(prev => ({ ...prev, affiliateLinks: [...prev.affiliateLinks, { label: '', url: '' }] }));
     const removeAffiliateLink = (index) => setFormData(prev => ({ ...prev, affiliateLinks: prev.affiliateLinks.filter((_, i) => i !== index) }));
     const handleAffiliateLinkChange = (index, field, value) => setFormData(prev => ({ ...prev, affiliateLinks: prev.affiliateLinks.map((link, i) => i === index ? { ...link, [field]: value } : link) }));
@@ -236,7 +235,17 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
             data.append('content', formData.contentMarkdown);
             data.append('summary', formData.summary);
             data.append('status', formData.status);
-            data.append('tags', formData.tags.join(','));
+            const trimmedTags = formData.tags.trim();
+            if (trimmedTags.length > 0) {
+                const filteredTags = trimmedTags
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag.length > 0)
+                    .join(',');
+                if (filteredTags.length > 0) {
+                    data.append('tags', filteredTags);
+                }
+            }
             data.append('affiliateLinks', JSON.stringify(formData.affiliateLinks));
             const headings = generateHeadings(formData.contentMarkdown);
             data.append('headings', JSON.stringify(headings));
@@ -329,9 +338,15 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
                                     <Paper variant="outlined" sx={{ p: 3, borderRadius: '12px' }}>
                                         <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>Thông tin cơ bản</Typography>
                                         <TextField label="Tóm tắt (Meta Description)" name="summary" value={formData.summary} onChange={handleChange} fullWidth multiline rows={4} variant="outlined" size="medium" sx={{ mb: 3 }} />
-                                        <Autocomplete multiple options={[]} value={formData.tags} onChange={handleTagsChange} freeSolo size="medium"
-                                            renderTags={(value, getTagProps) => value.map((option, index) => (<Chip variant="outlined" label={option} size="medium" {...getTagProps({ index })} />))}
-                                            renderInput={(params) => (<TextField {...params} variant="outlined" label="Tags" placeholder="Thêm tags..." />)}
+                                        <TextField
+                                            label="Tags"
+                                            name="tags"
+                                            value={formData.tags}
+                                            onChange={handleChange}
+                                            fullWidth
+                                            variant="outlined"
+                                            size="small"
+                                            placeholder="Nhập tags, phân tách bằng dấu phẩy (ví dụ: tag1,tag2)"
                                         />
                                         <Box sx={{ mt: 3 }}>
                                             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 1 }}>Trạng thái</Typography>
