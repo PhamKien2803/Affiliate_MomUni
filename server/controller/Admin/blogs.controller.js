@@ -162,14 +162,11 @@ module.exports.updateBlog = async (req, res) => {
             }
         }
 
-        if (tags !== undefined) {
-            blog.tags = Array.isArray(tags)
-                ? tags
-                : typeof tags === 'string'
-                    ? tags.split(',').map(tag => tag.trim())
-                    : [];
+        if (tags !== undefined && tags !== '') {
+            blog.tags = typeof tags === 'string' && tags
+                ? tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+                : Array.isArray(tags) ? tags : [];
         }
-
         if (affiliateLinks !== undefined) {
             blog.affiliateLinks = typeof affiliateLinks === 'string'
                 ? JSON.parse(affiliateLinks)
@@ -179,8 +176,10 @@ module.exports.updateBlog = async (req, res) => {
         await blog.save();
 
         res.status(200).json({
+
             code: 200,
-            message: "Update Blog Successfully"
+            message: "Update Blog Successfully",
+            blog
         });
 
     } catch (error) {
