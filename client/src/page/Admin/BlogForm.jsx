@@ -39,6 +39,15 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
     useEffect(() => {
         if (open) {
             let initialData;
+            let tagsArray = [];
+            if (typeof blogData.tags === 'string' && blogData.tags) {
+                tagsArray = blogData.tags
+                    .split(',')
+                    .map(tag => tag.trim())
+                    .filter(tag => tag.length > 0);
+            } else if (Array.isArray(blogData.tags)) {
+                tagsArray = blogData.tags;
+            }
             if (blogData) {
                 initialData = {
                     title: blogData.title || '',
@@ -81,7 +90,8 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
     };
 
     const handleTagsChange = (event, newValue) => {
-        setFormData(prev => ({ ...prev, tags: newValue }));
+        const uniqueTags = [...new Set(newValue.map(tag => tag.trim().toLowerCase()).filter(tag => tag.length > 0))];
+        setFormData(prev => ({ ...prev, tags: uniqueTags }));
     };
 
     const handleImageChange = (e) => {
@@ -197,7 +207,9 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
         submissionData.append('summary', formData.summary);
         // submissionData.append('authorId', formData.authorId);
 
-        formData.tags.forEach(tag => submissionData.append('tags[]', tag));
+        // Luôn gửi tags, kể cả mảng rỗng
+        const tagsString = formData.tags.join(',');
+        submissionData.append('tags', tagsString);
 
         const imageFiles = [];
         const imageCaptions = [];
@@ -238,7 +250,9 @@ const BlogForm = ({ open, onClose, blogData, onSaveSuccess }) => {
 
         try {
             if (blogData && blogData._id) {
+
                 await axiosInstance.put(`/admin/blog/update/${blogData._id}`, submissionData);
+
                 toast.success('Cập nhật bài viết thành công!');
             } else {
                 await axiosInstance.post('/admin/blog/create', submissionData);
