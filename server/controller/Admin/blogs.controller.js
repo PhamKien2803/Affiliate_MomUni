@@ -133,87 +133,6 @@ module.exports.deleteBlog = async (req, res) => {
     }
 };
 
-// module.exports.updateBlog = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const {
-//             title,
-//             content,
-//             summary,
-//             tags,
-//             affiliateLinks,
-//             captions
-//         } = req.body;
-
-//         const blog = await Blogs.findById(id);
-//         if (!blog) {
-//             return res.status(404).json({ message: 'Blog not found' });
-//         }
-
-//         if (title) {
-//             blog.title = title;
-//             blog.slug = slugify(title, { lower: true, strict: true });
-//         }
-
-//         if (content !== undefined) blog.content = content;
-//         if (summary !== undefined) blog.summary = summary;
-//         if (req.files) {
-
-//             if (req.files?.['images']) {
-//                 if (blog.images && blog.images.length > 0) {
-//                     for (const img of blog.images) {
-//                         if (img.public_id) await cloudinary.uploader.destroy(img.public_id);
-//                     }
-//                 }
-
-//                 blog.images = req.files['images'].map((file, index) => ({
-//                     url: file.path,
-//                     caption: Array.isArray(captions) ? captions[index] : '',
-//                     public_id: file.filename
-//                 }));
-//             }
-
-//             if (req.files?.['video'] && req.files['video'][0]) {
-//                 if (blog.video && blog.video.public_id) {
-//                     await cloudinary.uploader.destroy(blog.video.public_id, { resource_type: 'video' });
-//                 }
-
-//                 const videoFile = req.files['video'][0];
-//                 blog.video = {
-//                     url: videoFile.path,
-//                     caption: '',
-//                     public_id: videoFile.filename
-//                 };
-//             }
-//         }
-
-//         if (tags !== undefined) {
-//             blog.tags = Array.isArray(tags)
-//                 ? tags
-//                 : typeof tags === 'string'
-//                     ? tags.split(',').map(tag => tag.trim())
-//                     : [];
-//         }
-
-//         if (affiliateLinks !== undefined) {
-//             blog.affiliateLinks = typeof affiliateLinks === 'string'
-//                 ? JSON.parse(affiliateLinks)
-//                 : affiliateLinks;
-//         }
-
-//         await blog.save();
-
-//         res.status(200).json({
-//             code: 200,
-//             message: "Update Blog Successfully"
-//         });
-
-//     } catch (error) {
-//         console.error('Error updating blog:', error);
-//         res.status(500).json({ message: 'Internal server error', error });
-//     }
-// };
-
 module.exports.updateBlog = async (req, res) => {
     try {
         const { id } = req.params;
@@ -376,5 +295,40 @@ module.exports.getBlogById = async (req, res) => {
     } catch (error) {
         console.error('Lỗi khi lấy blog:', error);
         res.status(500).json({ message: 'Lỗi server, vui lòng thử lại sau' });
+    }
+};
+
+module.exports.uploaderBlogImagesToCloud = async (req, res) => {
+    try {
+        const files = req.files;
+        if (!files || files.length === 0) {
+            return res.status(400).json({ message: 'Không có tệp hình ảnh nào được gửi.' });
+        }
+
+        const uploadedImages = await Promise.all(
+            files.map(async (file) => {
+                const result = await cloudinary.uploader.upload(file.path, {
+                    folder: 'blogs/images',
+                    resource_type: 'image',
+                    transformation: [{ width: 1000, crop: 'limit' }],
+                });
+
+                return {
+                    url: result.secure_url,
+                    public_id: result.public_id,
+                };
+            })
+        );
+
+        res.status(200).json({
+            message: 'Tải lên hình ảnh thành công',
+            images: uploadedImages,
+        });
+    } catch (error) {
+        console.error('Lỗi khi tải lên hình ảnh:', error);
+        res.status(500).json({
+            message: 'Lỗi máy chủ nội bộ',
+            error: error.message,
+        });
     }
 };

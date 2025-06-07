@@ -16,5 +16,6 @@ router.put('/update/:id', upload.fields([
 router.delete('/delete/:id', controller.deleteBlog)
 router.get('/', controller.getBlog)
 router.put('/update-status/:id', controller.updateBlogStatus)
+router.post('/upload-images', upload.array('images', 10), controller.uploaderBlogImagesToCloud);
 
 module.exports = router;
