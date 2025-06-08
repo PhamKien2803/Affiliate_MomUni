@@ -358,15 +358,13 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
             data.append('status', formData.status);
             const trimmedTags = formData.tags.trim();
             if (trimmedTags.length > 0) {
-                const filteredTags = trimmedTags
+                const tagArray = trimmedTags
                     .split(',')
                     .map(tag => tag.trim())
-                    .filter(tag => tag.length > 0)
-                    .join(',');
-                if (filteredTags.length > 0) {
-                    data.append('tags', filteredTags);
-                }
+                    .filter(tag => tag.length > 0);
+                data.append('tags', JSON.stringify(tagArray));
             }
+
             data.append('affiliateLinks', JSON.stringify(formData.affiliateLinks));
             const headings = generateHeadings(formData.contentMarkdown);
             data.append('headings', JSON.stringify(headings));
@@ -403,6 +401,8 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
 
 
             if (blogData?._id) {
+                console.log(data);
+
                 await axiosInstance.put(`admin/blog/update/${blogData._id}`, data);
                 toast.success('Cập nhật bài viết thành công!');
             } else {

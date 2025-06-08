@@ -200,6 +200,18 @@ module.exports.updateBlog = async (req, res) => {
                 blog.video = null;
             }
         }
+
+        if (tags !== undefined && tags !== '') {
+            blog.tags = typeof tags === 'string' && tags
+                ? tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+                : Array.isArray(tags) ? tags : [];
+        }
+        if (affiliateLinks !== undefined) {
+            blog.affiliateLinks = typeof affiliateLinks === 'string'
+                ? JSON.parse(affiliateLinks)
+                : affiliateLinks;
+        }
+
         await blog.save();
         const newAnalytics = new Analytics({
             blogId: blog._id,
@@ -210,7 +222,9 @@ module.exports.updateBlog = async (req, res) => {
         });
         await newAnalytics.save();
         res.status(200).json({
-            message: "Cập nhật bài viết thành công!",
+
+            code: 200,
+            message: "Update Blog Successfully",
             blog
         });
 
