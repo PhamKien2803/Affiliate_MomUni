@@ -64,20 +64,41 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
     useEffect(() => {
         if (open) {
             let initialData;
+            console.log(blogData);
+
             if (blogData) {
+                // Handle tags: convert to comma-separated string
+                let tagsValue = '';
+                if (blogData.tags) {
+                    if (Array.isArray(blogData.tags)) {
+                        // If tags is an array, join it
+                        tagsValue = blogData.tags.join(', ');
+                    } else if (typeof blogData.tags === 'string') {
+                        try {
+                            // Try parsing if it's a stringified JSON array
+                            const parsedTags = JSON.parse(blogData.tags);
+                            if (Array.isArray(parsedTags)) {
+                                tagsValue = parsedTags.join(', ');
+                            } else {
+                                // If it's a plain string, use it directly
+                                tagsValue = blogData.tags;
+                            }
+                        } catch (error) {
+                            // If JSON parsing fails, treat as a comma-separated string
+                            tagsValue = blogData.tags;
+                        }
+                    }
+                }
+
                 initialData = {
                     title: blogData.title || '',
                     contentMarkdown: blogData.content || '',
                     summary: blogData.summary || '',
                     authorId: blogData.authorId?._id || blogData.authorId || '',
-                    // tags: blogData.tags || [],
-                    tags: Array.isArray(blogData.tags) ? blogData.tags.join(', ') : blogData.tags || '',
+                    tags: tagsValue,
                     images: blogData.images?.map(img => ({ ...img, file: null, caption: img.caption || '' })) || [],
                     video: blogData.video ? { ...blogData.video, file: null, caption: blogData.video.caption || '' } : null,
                     affiliateLinks: blogData.affiliateLinks || [],
-
-
-
                     status: blogData.status || 'inactive',
                 };
             } else {
@@ -485,12 +506,12 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
                                         <TextField
                                             label="Tags"
                                             name="tags"
-                                            value={formData.tags || ''}
+                                            value={typeof formData.tags === 'string' ? formData.tags : ''}
                                             onChange={handleChange}
                                             fullWidth
                                             variant="outlined"
                                             size="small"
-                                            placeholder="Nhập tags, phân tách bằng dấu phẩy (ví dụ: tag1,tag2)"
+                                            placeholder="Nhập tags, phân tách bằng dấu phẩy (ví dụ: mẹ, bé)"
                                         />
                                         <Box sx={{ mt: 3 }}>
                                             <Typography variant="subtitle1" sx={{ color: 'text.secondary', mb: 1 }}>Trạng thái</Typography>
