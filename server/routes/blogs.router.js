@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controller/Admin/blogs.controller');
 const { upload } = require('../middleware/upload.middleware');
-
+const authMiddleware = require('../middleware/auth.middleware');
 // /admin/blog
-router.post('/create', upload.fields([
+router.post('/create', authMiddleware, upload.fields([
     { name: 'newImages', maxCount: 10 },
     { name: 'newVideo', maxCount: 1 }
 ]), controller.createBlog)
