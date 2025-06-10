@@ -70,10 +70,14 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
                     contentMarkdown: blogData.content || '',
                     summary: blogData.summary || '',
                     authorId: blogData.authorId?._id || blogData.authorId || '',
-                    tags: blogData.tags || [],
+                    // tags: blogData.tags || [],
+                    tags: Array.isArray(blogData.tags) ? blogData.tags.join(', ') : blogData.tags || '',
                     images: blogData.images?.map(img => ({ ...img, file: null, caption: img.caption || '' })) || [],
                     video: blogData.video ? { ...blogData.video, file: null, caption: blogData.video.caption || '' } : null,
                     affiliateLinks: blogData.affiliateLinks || [],
+
+
+
                     status: blogData.status || 'inactive',
                 };
             } else {
@@ -336,9 +340,17 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
         setFormData(prev => ({ ...prev, video: null }));
     };
 
-    const handleAddAffiliateLink = () => setFormData(prev => ({ ...prev, affiliateLinks: [...prev.affiliateLinks, { label: '', url: '' }] }));
+    // const handleAddAffiliateLink = () => setFormData(prev => ({
+    //     ...prev, affiliateLinks: [...prev.affiliateLinks, { label: '', url: '', image: { file: File, url: String, public_id: String } }
+    //     ]
+    // }));
     const removeAffiliateLink = (index) => setFormData(prev => ({ ...prev, affiliateLinks: prev.affiliateLinks.filter((_, i) => i !== index) }));
     const handleAffiliateLinkChange = (index, field, value) => setFormData(prev => ({ ...prev, affiliateLinks: prev.affiliateLinks.map((link, i) => i === index ? { ...link, [field]: value } : link) }));
+
+    const handleAddAffiliateLink = () => setFormData(prev => ({
+        ...prev, affiliateLinks: [...prev.affiliateLinks, { label: '', url: '', image: '' }]
+    }));
+
 
 
     const requestClose = () => {
@@ -356,14 +368,25 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
             data.append('content', formData.contentMarkdown);
             data.append('summary', formData.summary);
             data.append('status', formData.status);
-            const trimmedTags = formData.tags.trim();
-            if (trimmedTags.length > 0) {
-                const tagArray = trimmedTags
+            // const trimmedTags = formData.tags.trim();
+            // if (trimmedTags.length > 0) {
+            //     const tagArray = trimmedTags
+            //         .split(',')
+            //         .map(tag => tag.trim())
+            //         .filter(tag => tag.length > 0);
+            //     data.append('tags', JSON.stringify(tagArray));
+            // }
+
+            if (typeof formData.tags === 'string') {
+                const tagArray = formData.tags
                     .split(',')
                     .map(tag => tag.trim())
                     .filter(tag => tag.length > 0);
-                data.append('tags', JSON.stringify(tagArray));
+                if (tagArray.length > 0) {
+                    data.append('tags', JSON.stringify(tagArray));
+                }
             }
+
 
             data.append('affiliateLinks', JSON.stringify(formData.affiliateLinks));
             const headings = generateHeadings(formData.contentMarkdown);
@@ -462,7 +485,7 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
                                         <TextField
                                             label="Tags"
                                             name="tags"
-                                            value={formData.tags}
+                                            value={formData.tags || ''}
                                             onChange={handleChange}
                                             fullWidth
                                             variant="outlined"
@@ -565,6 +588,42 @@ const BlogForm2 = ({ open, onClose, blogData, onSaveSuccess }) => {
                                                     <Stack spacing={1.5}>
                                                         <TextField label="Tên sản phẩm" value={link.label} onChange={(e) => handleAffiliateLinkChange(index, 'label', e.target.value)} fullWidth variant="outlined" size="small" />
                                                         <TextField label="URL" value={link.url} onChange={(e) => handleAffiliateLinkChange(index, 'url', e.target.value)} fullWidth variant="outlined" size="small" />
+                                                        <TextField
+                                                            label="Ảnh SP (URL)"
+                                                            value={link.image}
+                                                            onChange={(e) => handleAffiliateLinkChange(index, 'image', e.target.value)}
+                                                            fullWidth
+                                                            variant="standard"
+                                                            size="small"
+                                                        />
+
+                                                        {link.image && typeof link.image === 'string' && (
+                                                            <Box
+                                                                sx={{
+                                                                    mt: 1.5,
+                                                                    textAlign: 'center',
+                                                                    border: `1px solid ${theme.palette.divider}`,
+                                                                    borderRadius: 1,
+                                                                    padding: 1,
+                                                                    backgroundColor: alpha(theme.palette.action.selected, 0.1),
+                                                                }}
+                                                            >
+                                                                <Typography variant="caption" color="text.secondary">
+                                                                    Preview ảnh:
+                                                                </Typography>
+                                                                <Box
+                                                                    component="img"
+                                                                    src={link.image}
+                                                                    alt={`Ảnh affiliate ${index}`}
+                                                                    sx={{ width: '100%', maxHeight: 120, objectFit: 'contain', mt: 0.5 }}
+                                                                    onError={(e) => {
+                                                                        e.target.onerror = null;
+                                                                        e.target.src = 'https://via.placeholder.com/120x80?text=No+Image';
+                                                                    }}
+                                                                />
+                                                            </Box>
+                                                        )}
+
                                                     </Stack>
                                                     <IconButton onClick={() => removeAffiliateLink(index)} color="error" size="small" sx={{ position: 'absolute', top: 8, right: 8 }}><DeleteIcon fontSize='small' /></IconButton>
                                                 </Paper>
